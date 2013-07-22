@@ -40,8 +40,7 @@ exports.BattleFormats = {
 		rated: true,
 		challengeShow: true,
 		searchShow: true,
-		isTeambuilderFormat: true,
-		maxForceLevel: 5,		
+		isTeambuilderFormat: true,		
 		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
 		banlist: ['Sonicboom', 'Dragon Rage', 'Berry Juice', 'Carvanha', 'Meditite', 'Gligar', 'Scyther', 'Sneasel', 'Tangela', 'Vulpix', 'Yanma', 'Soul Dew']
 	},	
