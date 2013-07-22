@@ -35,14 +35,16 @@ exports.BattleFormats = {
 		name: "[Gen 6] LC (beta)",
 		section: "Generation 6",
 
-                mod: 'gen6'
+		mod: 'gen6',
 		effectType: 'Format',
+		challengeDefault: true,
 		rated: true,
 		challengeShow: true,
 		searchShow: true,
-		isTeambuilderFormat: true,		
-		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
-		banlist: ['NU','NFE','Sonicboom','Dragon Rage','Berry Juice','Carvanha','Meditite','Gligar','Scyther','Sneasel','Tangela','Vulpix','Yanma','Soul Dew']
+		isTeambuilderFormat: true,
+		maxLevel: 5,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview','Little Cup'],
+		banlist: ['Soul Dew']
 	},	
 	pokecyberou: {
 		name: "PokeCyber OU",
