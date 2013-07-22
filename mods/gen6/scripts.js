@@ -26,7 +26,7 @@ exports.BattleScripts = {
 	this.modData('Learnsets', 'gallade').learnset.lunardance = ['5L0'];
 	this.modData('Learnsets', 'gallade').learnset.mysticcrash = ['5L0'];
 	
-	//Brave Bird Is now a tutor moves
+	//Brave Bird Is now a tutor move
 	this.modData('Learnsets', 'charizard').learnset.bravebird = ['5T'];
 	this.modData('Learnsets', 'butterfree').learnset.bravebird = ['5T'];
 	this.modData('Learnsets', 'fearow').learnset.bravebird = ['5T'];
@@ -63,7 +63,7 @@ exports.BattleScripts = {
 		},
 
 	//redefine randomTeam to make gen6 pokemon more likely to appear yet prevent them from appearing twice
-	randomTeam: function(side) {
+	/**randomTeam: function(side) {
 		var keys = [];
 		var pokemonLeft = 0;
 		var pokemon = [];
@@ -171,5 +171,5 @@ exports.BattleScripts = {
 			}
 		}
 		return pokemon;
-	}
+	}**/
 };
