@@ -3,7 +3,114 @@ exports.BattleFormats = {
 	// Singles
 	///////////////////////////////////////////////////////////////////
 
-	randombattle: {
+	gen6ubersbeta: {
+		name: "[Gen 6] Ubers (beta)",
+		section: "Generation 6",
+
+		mod: 'gen6',
+		effectType: 'Format',
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard','Team Preview'],
+		banlist: []
+	},	
+	gen6oubeta: {
+		name: "[Gen 6] OU (beta)",
+		section: "Generation 6",
+
+		mod: 'gen6',
+		effectType: 'Format',
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber','Drizzle','Soul Dew']
+	},	
+	pokecyberou: {
+		name: "PokeCyber OU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber','Soul Dew', 'Drizzle']
+	},
+	pokecyberbl: {
+		name: "PokeCyber BL",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['OU']
+	},	
+	pokecyberuu: {
+		name: "PokeCyber UU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['OU','BL']
+	},
+	pokecyberru: {
+		name: "PokeCyber RU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['UU','BL2','Drought','Sand Stream']
+	},
+	pokecybernu: {
+		name: "PokeCyber NU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['RU','BL3']
+	},
+	pokecyberlou: {
+		name: "PokeCyber LOU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['NU']
+	},
+
+		randombattle: {
 		name: "Random Battle",
 		section: "Singles",
 
@@ -98,7 +205,7 @@ exports.BattleFormats = {
 		effectType: 'Format',
 		rated: true,
 		challengeShow: true,
-		//searchShow: true,
+		searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['OU'],
 		banlist: ['OU', 'BL', 'Drought', 'Sand Stream']
@@ -117,18 +224,6 @@ exports.BattleFormats = {
 	},
 	ru: {
 		name: "RU",
-		section: "Singles",
-
-		effectType: 'Format',
-		rated: true,
-		challengeShow: true,
-		//searchShow: true,
-		isTeambuilderFormat: true,
-		ruleset: ['UU'],
-		banlist: ['UU', 'BL2', 'Shell Smash + Baton Pass']
-	},
-	rususpecttest: {
-		name: "RU (suspect test)",
 		section: "Singles",
 
 		effectType: 'Format',
@@ -234,27 +329,33 @@ exports.BattleFormats = {
 			'Keldeo', 'Keldeo-Resolute',  'Meloetta', 'Genesect'
 		]
 	},
-	globalshowdown: {
-		name: "Global Showdown",
+
+	randommonotypeside: {
+		name: "Random Monotype (Side)",
 		section: "Singles",
 
+		mod: 'randmonoside',      
 		effectType: 'Format',
-		challengeShow: true,
+		team: 'randomMonoside',
+		canUseRandomTeam: true,
 		rated: true,
+		challengeShow: true,
 		searchShow: true,
-		validateSet: function(set) {
-			if (!set.level || set.level >= 50) set.forcedLevel = 50;
-			return [];
-		},
-		onBegin: function() {
-			this.debug('cutting down to 3');
-			this.p1.pokemon = this.p1.pokemon.slice(0,3);
-			this.p1.pokemonLeft = this.p1.pokemon.length;
-			this.p2.pokemon = this.p2.pokemon.slice(0,3);
-			this.p2.pokemonLeft = this.p2.pokemon.length;
-		},
-		ruleset: ['Pokemon', 'Species Clause', 'Item Clause', 'Team Preview GBU'],
-		banlist: ['Unreleased', 'Illegal', 'Sky Drop', 'Dark Void', 'Soul Dew', 'Chatot']
+		ruleset: ['Pokemon', 'HP Percentage Mod']
+	},
+
+	randomgen6: {
+		name: "Random Gen 6",
+		section: "Singles",
+
+		mod: 'gen6',      
+		effectType: 'Format',
+		team: 'random',
+		canUseRandomTeam: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod']
 	},
 
 	// Doubles
@@ -376,7 +477,7 @@ exports.BattleFormats = {
 
 	// Other Metagames
 	///////////////////////////////////////////////////////////////////
-	
+
 	oumonotype: {
 		name: "OU Monotype",
 		section: "OM of the Month",
@@ -900,7 +1001,7 @@ exports.BattleFormats = {
 		validateSet: function(set, format) {
 			// don't return
 			this.getEffect('Pokemon').validateSet.call(this, set, format);
-			
+
 			// limit one of each move
 			var moves = [];
 			if (set.moves) {
