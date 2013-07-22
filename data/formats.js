@@ -344,7 +344,7 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'HP Percentage Mod']
 	},
 
-	randomgen6: {
+/**	randomgen6: {
 		name: "Random Gen 6",
 		section: "Singles",
 
@@ -356,7 +356,7 @@ exports.BattleFormats = {
 		challengeShow: true,
 		searchShow: true,
 		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod']
-	},
+	},**/
 
 	// Doubles
 	///////////////////////////////////////////////////////////////////
