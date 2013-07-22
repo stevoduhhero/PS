@@ -41,8 +41,8 @@ exports.BattleFormats = {
 		challengeShow: true,
 		searchShow: true,
 		isTeambuilderFormat: true,		
-		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'LC'],
-		banlist: ['Sonicboom', 'Dragon Rage', 'Berry Juice', 'Carvanha', 'Meditite', 'Gligar', 'Scyther', 'Sneasel', 'Tangela', 'Vulpix', 'Yanma', 'Soul Dew']
+		ruleset: ['Pokemon', 'Standard', 'Team Preview'],
+		banlist: ['NU','NFE','Sonicboom', 'Dragon Rage', 'Berry Juice', 'Carvanha', 'Meditite', 'Gligar', 'Scyther', 'Sneasel', 'Tangela', 'Vulpix', 'Yanma','Soul Dew']
 	},	
 	pokecyberou: {
 		name: "PokeCyber OU",
