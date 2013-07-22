@@ -33,7 +33,7 @@ exports.BattleFormats = {
 	},	
 	gen6lcbeta: {
 		name: "[Gen 6] LC (beta)",
-		section: "Singles",
+		section: "Generation 6",
 
                 mod: 'gen6'
 		effectType: 'Format',
@@ -41,7 +41,7 @@ exports.BattleFormats = {
 		challengeShow: true,
 		searchShow: true,
 		isTeambuilderFormat: true,		
-		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
+		ruleset: ['Pokemon', 'Standard', 'Team Preview', 'LC'],
 		banlist: ['Sonicboom', 'Dragon Rage', 'Berry Juice', 'Carvanha', 'Meditite', 'Gligar', 'Scyther', 'Sneasel', 'Tangela', 'Vulpix', 'Yanma', 'Soul Dew']
 	},	
 	pokecyberou: {
