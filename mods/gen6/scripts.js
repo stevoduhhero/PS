@@ -2,7 +2,8 @@ exports.BattleScripts = {
         init: function() {
                 for (var i in this.data.FormatsData)
                         this.data.FormatsData[i].dreamWorldRelease = true;
-    	
+        },
+        
 	this.modData('Pokedex', 'azumarill').types = ["Water","Fairy"];
  	this.modData('Learnsets', 'azumarill').learnset.lunardance = ['5L0'];
  	this.modData('Learnsets', 'azumarill').learnset.mysticcrash = ['5L0'];        
@@ -60,7 +61,6 @@ exports.BattleScripts = {
 	this.modData('Learnsets', 'tornadus').learnset.bravebird = ['5T'];
 	this.modData('Learnsets', 'thundurus').learnset.bravebird = ['5T'];
 	this.modData('Learnsets', 'landorus').learnset.bravebird = ['5T'];
-		},
 
 	//redefine randomTeam to make gen6 pokemon more likely to appear yet prevent them from appearing twice
 	randomTeam: function(side) {
