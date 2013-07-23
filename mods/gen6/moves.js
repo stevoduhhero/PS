@@ -148,7 +148,7 @@ exports.BattleMovedex = {
                 isSoundBased: true,
                 secondary: false,
                 target: "all",
-                type: "Normal"
+                type: "Dragon"
         },
         "moonblast": {
                 num: 1035,
