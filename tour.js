@@ -853,7 +853,6 @@ Rooms.global.startBattle = function(p1, p2, format, rated, p1team, p2team) {
 	if (!rated) {
 		var name1 = p1.name;
 		var name2 = p2.name;
-		newRoom.originalPlayers = [p1.userid,p2.userid];
 		var battleid = i;
 		for (var i in tour) {
 			var c = tour[i];
