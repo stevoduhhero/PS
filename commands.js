@@ -352,7 +352,7 @@ var commands = exports.commands = {
 			// This condition appears to be impossible for now.
 			return connection.sendTo(target, "|noinit|joinfailed|The room '"+target+"' could not be joined.");
 		}
-		if (room.id == "lobby") this.sendReplyBox('The server you\'re visiting is an incomplete version of the real server! go <a href="http://elloworld.dyndns.org/ps/psclient/"><b>HERE</b></a> for the true experience with the custom client!');
+		if (room.id == "lobby") this.sendReplyBox('The server you\'re visiting is probably an incomplete version of the real server! go <a href="http://elloworld.dyndns.org/ps/psclient/"><b>HERE</b></a> for the true experience with the custom client!');
 	},
 
 	leave: 'part',
