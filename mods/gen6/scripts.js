@@ -63,11 +63,11 @@ exports.BattleScripts = {
 		},
 
 	//redefine randomTeam to make gen6 pokemon more likely to appear yet prevent them from appearing twice
-	/**randomTeam: function(side) {
+	randomTeam: function(side) {
 		var keys = [];
 		var pokemonLeft = 0;
 		var pokemon = [];
-		var gen6pokemon = ['xerneas','yveltal','azumarill','gardevoir','clefable','gallade'];
+		var gen6pokemon = ['xerneas','yveltal','azumarill','gardevoir','clefable','gallade','fletchling','talonflame'];
 		var chosenspecies = [];
 		for (var i in this.data.FormatsData) {
 			if (this.data.FormatsData[i].viableMoves) {
@@ -172,4 +172,4 @@ exports.BattleScripts = {
 		}
 		return pokemon;
 	}
-};**/
+};
