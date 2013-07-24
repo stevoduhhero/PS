@@ -55,6 +55,32 @@ exports.BattleFormats = {
 		maxLevel: 5,
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview','Little Cup'],
 		banlist: ['Soul Dew']
+	},
+	swalotworld: {
+		name: "Swalot World",
+		section: "Swalots Universe",
+
+		effectType: 'Format',
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Swalot Clause'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
+	},
+	gulpinsfunhouse: {
+		name: "Gulpins Funhouse",
+		section: "Swalots Universe",
+
+		effectType: 'Format',
+		challengeDefault: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Gulpin Clause'],
+		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},	
 	pokecyberou: {
 		name: "PokeCyber OU",
@@ -895,6 +921,30 @@ exports.BattleFormats = {
 	// Rulesets
 	///////////////////////////////////////////////////////////////////
 
+	swalotclause: {
+                effectType: 'Rule',
+                onStart: function() {
+			this.add('rule', 'Swalot Clause: Swalots are allowed.');
+		},
+                validateSet: function(set) {
+                        var template = this.getTemplate(set.species);
+                        if (set.species !== 'Swalot') {
+                                return [set.species+" is banned because it's not a swalot you hoe."];
+                        }
+                }
+        },
+	gulpinclause: {
+                effectType: 'Rule',
+                onStart: function() {
+			this.add('rule', 'Gulpin Clause: Gulpins are allowed.');
+		},
+                validateSet: function(set) {
+                        var template = this.getTemplate(set.species);
+                        if (set.species !== 'Gulpin') {
+                                return [set.species+" is banned because it's not a gulpin you bitch."];
+                        }
+                }
+        },        
 	standard: {
 		effectType: 'Banlist',
 		ruleset: ['Sleep Clause Mod', 'Species Clause', 'OHKO Clause', 'Moody Clause', 'Evasion Moves Clause', 'HP Percentage Mod'],
