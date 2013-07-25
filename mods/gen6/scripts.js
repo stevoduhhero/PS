@@ -57,9 +57,15 @@ exports.BattleScripts = {
 	this.modData('Learnsets', 'tornadus').learnset.bravebird = ['5L0'];
 	this.modData('Learnsets', 'thundurus').learnset.bravebird = ['5L0'];
 	this.modData('Learnsets', 'landorus').learnset.bravebird = ['5L0'];
-
+	
+			// Every DW ability that isn't Shadow Tag becomes released
+		for (var i in this.data.FormatsData) {
+			if (i !== 'chandelure' && i !== 'gothitelle') {
+				this.modData('FormatsData', i).dreamWorldRelease = true;
+			}
+		}	
 	//redefine randomTeam to make gen6 pokemon more likely to appear yet prevent them from appearing twice
-	randomTeam: function(side) {
+	/**randomTeam: function(side) {
 		var keys = [];
 		var pokemonLeft = 0;
 		var pokemon = [];
@@ -166,13 +172,6 @@ exports.BattleScripts = {
 				nuCount++;
 			}
 		}
-		return pokemon;
-	}
-		// Every DW ability that isn't Shadow Tag becomes released
-		for (var i in this.data.FormatsData) {
-			if (i !== 'chandelure' && i !== 'gothitelle') {
-				this.modData('FormatsData', i).dreamWorldRelease = true;
-			}
-		}
+		return pokemon;**/
 	}
 };
