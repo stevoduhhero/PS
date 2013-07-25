@@ -26,8 +26,7 @@ exports.BattleScripts = {
 	this.modData('Learnsets', 'gallade').learnset.drainingkiss = ['5L0'];              
 	this.modData('Learnsets', 'gallade').learnset.lunardance = ['5L0'];
 	this.modData('Learnsets', 'gallade').learnset.mysticcrash = ['5L0'];
-	
-	//Brave Bird Is now a tutor move
+		//Brave Bird Is now a tutor move
 	this.modData('Learnsets', 'charizard').learnset.bravebird = ['5T'];
 	this.modData('Learnsets', 'butterfree').learnset.bravebird = ['5T'];
 	this.modData('Learnsets', 'fearow').learnset.bravebird = ['5T'];
