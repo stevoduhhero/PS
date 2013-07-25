@@ -176,4 +176,4 @@ exports.BattleScripts = {
 		}
 		return pokemon;
 	}
-};
+};**/
