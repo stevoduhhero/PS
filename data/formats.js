@@ -48,26 +48,22 @@ exports.BattleFormats = {
 		section: "Swalots Universe",
 
 		effectType: 'Format',
-		challengeDefault: true,
 		rated: true,
 		challengeShow: true,
 		searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Swalot Clause'],
-		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
 	gulpinsfunhouse: {
 		name: "Gulpins Funhouse",
 		section: "Swalots Universe",
 
 		effectType: 'Format',
-		challengeDefault: true,
 		rated: true,
 		challengeShow: true,
 		searchShow: true,
 		isTeambuilderFormat: true,
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Gulpin Clause'],
-		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},	
 	pokecyberou: {
 		name: "PokeCyber OU",
