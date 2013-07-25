@@ -1,9 +1,5 @@
 exports.BattleScripts = {
-        init: function() {
-                for (var i in this.data.FormatsData)
-                        this.data.FormatsData[i].dreamWorldRelease = true;
-        },
-        
+        init: function() {  
 	this.modData('Pokedex', 'azumarill').types = ["Water","Fairy"];
  	this.modData('Learnsets', 'azumarill').learnset.lunardance = ['5L0'];
  	this.modData('Learnsets', 'azumarill').learnset.mysticcrash = ['5L0'];        
@@ -171,5 +167,12 @@ exports.BattleScripts = {
 			}
 		}
 		return pokemon;
+	}
+		// Every DW ability that isn't Shadow Tag becomes released
+		for (var i in this.data.FormatsData) {
+			if (i !== 'chandelure' && i !== 'gothitelle') {
+				this.modData('FormatsData', i).dreamWorldRelease = true;
+			}
+		}
 	}
 };
