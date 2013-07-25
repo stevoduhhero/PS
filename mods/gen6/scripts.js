@@ -63,7 +63,8 @@ exports.BattleScripts = {
 				this.modData('FormatsData', i).dreamWorldRelease = true;
 			}
 		}
-		
+        },
+        
 	//redefine randomTeam to make gen6 pokemon more likely to appear yet prevent them from appearing twice
 	randomTeam: function(side) {
 		var keys = [];
@@ -172,5 +173,6 @@ exports.BattleScripts = {
 				nuCount++;
 			}
 		return pokemon;
+		}
 	}
 };	
