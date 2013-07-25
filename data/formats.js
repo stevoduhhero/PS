@@ -3,7 +3,7 @@ exports.BattleFormats = {
 	// Singles
 	///////////////////////////////////////////////////////////////////
 	
-		gen6randombattle: {
+		/***gen6randombattle: {
 		name: "[Gen 6] Random Battle",
 		section: "Generation 6",
 
@@ -15,7 +15,7 @@ exports.BattleFormats = {
 		challengeShow: true,
 		searchShow: true,
 		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod']
-	},
+	},**/
 	gen6ubersbeta: {
 		name: "[Gen 6] Ubers (beta)",
 		section: "Generation 6",
