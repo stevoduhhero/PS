@@ -50,7 +50,7 @@ exports.BattleScripts = {
 	
 	this.modData('Learnsets', 'gligar').learnset.bravebird = ['5L0'];
 	
-	this.modData('Learnsets', 'gliscor').learnset.bravebird = ['5T'];
+	this.modData('Learnsets', 'gliscor').learnset.bravebird = ['5L0'];
 	
 	this.modData('Learnsets', 'lugia').learnset.bravebird = ['5L0'];
 	
