@@ -113,6 +113,63 @@ if (process.argv[2] && parseInt(process.argv[2])) {
 	config.port = parseInt(process.argv[2]);
 }
 
+global.ResourceMonitor = {
+	connections: {},
+	connectionTimes: {},
+	battles: {},
+	battleTimes: {},
+	/**
+	 * Counts a connection. Returns true if the connection should be terminated for abuse.
+	 */
+	log: function(text) {
+		console.log(text);
+		if (Rooms.rooms.staff) Rooms.rooms.staff.add('||'+text);
+	},
+	countConnection: function(ip, name) {
+		var now = Date.now();
+		var duration = now - this.connectionTimes[ip];
+		name = (name ? ': '+name : '');
+		if (ip in this.connections && duration < 30*60*1000) {
+			this.connections[ip]++;
+			if (duration < 5*60*1000 && this.connections[ip] % 10 == 0) {
+				if (this.connections[ip] >= 30) {
+					if (this.connections[ip] % 30 == 0) this.log('IP '+ip+' rejected for '+this.connections[ip]+'th connection in the last '+duration.duration()+name);
+					return true;
+				}
+				this.log('[ResourceMonitor] IP '+ip+' has connected '+this.connections[ip]+' times in the last '+duration.duration()+name);
+			} else if (this.connections[ip] % 50 == 0) {
+				if (this.connections[ip] >= 250) {
+					if (this.connections[ip] % 50 == 0) this.log('IP '+ip+' rejected for '+this.connections[ip]+'th connection in the last '+duration.duration()+name);
+					return true;
+				}
+				this.log('[ResourceMonitor] IP '+ip+' has connected '+this.connections[ip]+' times in the last '+duration.duration()+name);
+			}
+		} else {
+			this.connections[ip] = 1;
+			this.connectionTimes[ip] = now;
+		}
+	},
+	/**
+	 * Counts a battle. Returns true if the connection should be terminated for abuse.
+	 */
+	countBattle: function(ip, name) {
+		var now = Date.now();
+		var duration = now - this.battleTimes[ip];
+		name = (name ? ': '+name : '');
+		if (ip in this.battles && duration < 30*60*1000) {
+			this.battles[ip]++;
+			if (duration < 5*60*1000 && this.battles[ip] % 15 == 0) {
+				this.log('[ResourceMonitor] IP '+ip+' has battled '+this.battles[ip]+' times in the last '+duration.duration()+name);
+			} else if (this.battles[ip] % 75 == 0) {
+				this.log('[ResourceMonitor] IP '+ip+' has battled '+this.battles[ip]+' times in the last '+duration.duration()+name);
+			}
+		} else {
+			this.battles[ip] = 1;
+			this.battleTimes[ip] = now;
+		}
+	}
+};
+
 /*********************************************************
  * Start our servers
  *********************************************************/
@@ -318,8 +375,10 @@ if (config.crashguard) {
 			lastCrash = Date.now();
 			if (quietCrash) return;
 			var stack = (""+err.stack).split("\n").slice(0,2).join("<br />");
-			Rooms.lobby.addRaw('<div class="broadcast-red"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
-			Rooms.lobby.addRaw('<div class="broadcast-red">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
+			if (Rooms.lobby) {
+				Rooms.lobby.addRaw('<div class="broadcast-red"><b>THE SERVER HAS CRASHED:</b> '+stack+'<br />Please restart the server.</div>');
+				Rooms.lobby.addRaw('<div class="broadcast-red">You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
+			}
 			config.modchat = 'crash';
 			Rooms.global.lockdown = true;
 		};
@@ -386,8 +445,13 @@ server.on('connection', function(socket) {
 		}
 	}
 
-	if (Users.checkBanned(socket.remoteAddress)) {
-		console.log('CONNECT BLOCKED - IP BANNED: '+socket.remoteAddress);
+	if (ResourceMonitor.countConnection(socket.remoteAddress)) {
+		socket.end();
+		return;
+	}
+	var checkResult = Users.checkBanned(socket.remoteAddress);
+	if (checkResult) {
+		console.log('CONNECT BLOCKED - IP BANNED: '+socket.remoteAddress+' ('+checkResult+')');
 		socket.end();
 		return;
 	}
@@ -419,7 +483,8 @@ server.on('connection', function(socket) {
 
 			var roomid = message.substr(0, pipeIndex);
 			var lines = message.substr(pipeIndex + 1);
-			var room = Rooms.get(roomid, 'lobby');
+			var room = Rooms.get(roomid);
+			if (!room) room = Rooms.lobby || Rooms.global;
 			var user = connection.user;
 			if (lines.substr(0,3) === '>> ' || lines.substr(0,4) === '>>> ') {
 				user.chat(lines, room, connection);
@@ -484,5 +549,17 @@ global.Tools = require('./tools.js');
 
 // After loading tools, generate and cache the format list.
 Rooms.global.formatListText = Rooms.global.getFormatListText();
+
+// load ipbans at our leisure
+fs.readFile('./config/ipbans.txt', function (err, data) {
+	if (err) return;
+	data = (''+data).split("\n");
+	for (var i=0; i<data.length; i++) {
+		data[i] = data[i].split('#')[0].trim();
+		if (data[i] && !Users.bannedIps[data[i]]) {
+			Users.bannedIps[data[i]] = '#ipban';
+		}
+	}
+});
 
 global.tour = require('./tour.js').tour();
