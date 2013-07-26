@@ -1,7 +1,8 @@
 exports.BattleFormats = {
-		// SINGLES
+
+	// Singles
 	///////////////////////////////////////////////////////////////////
-	
+
 		gen6randombattle: {
 		name: "[Gen 6] Random Battle",
 		section: "Generation 6",
