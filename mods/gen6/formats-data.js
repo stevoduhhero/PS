@@ -22,5 +22,5 @@ exports.BattleFormatsData = {
                 tier: 'UU',
         	dreamWorldRelease: true,                
                 viableMoves: {burningskies:1,bravebird:1,flamecharge:1,roost:1}                
-        },           
+        }
 };
