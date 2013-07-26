@@ -56,12 +56,5 @@ exports.BattleScripts = {
 		this.modData('Learnsets', 'tornadus').learnset.bravebird = ['5L100'];
 		this.modData('Learnsets', 'thundurus').learnset.bravebird = ['5L100'];
 		this.modData('Learnsets', 'landorus').learnset.bravebird = ['5L100'];
-
-		// Every DW ability that isn't Shadow Tag becomes released
-		for (var i in this.data.FormatsData) {
-			if (i !== 'chandelure' && i !== 'gothitelle') {
-				this.modData('FormatsData', i).dreamWorldRelease = true;
-			}
-		}
         }
 };	
