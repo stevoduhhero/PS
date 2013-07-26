@@ -1,4 +1,135 @@
 exports.BattleFormats = {
+		gen6randombattle: {
+		name: "[Gen 6] Random Battle",
+		section: "Generation 6",
+
+		mod: 'gen6',      
+		effectType: 'Format',
+		team: 'random',
+		canUseRandomTeam: true,
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		ruleset: ['PotD', 'Pokemon', 'Sleep Clause Mod', 'HP Percentage Mod']
+	},
+	gen6ubersbeta: {
+		name: "[Gen 6] Ubers (beta)",
+		section: "Generation 6",
+
+		mod: 'gen6',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard','Team Preview'],
+		banlist: []
+	},
+	gen6oubeta: {
+		name: "[Gen 6] OU (beta)",
+		section: "Generation 6",
+
+		mod: 'gen6',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber','Drizzle','Soul Dew']
+	},	
+	gen6lcbeta: {
+		name: "[Gen 6] LC (beta)",
+		section: "Generation 6",
+
+		mod: 'gen6',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		maxLevel: 5,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview','Little Cup'],
+		banlist: ['Soul Dew']
+	},	
+	pokecyberou: {
+		name: "PokeCyber OU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['Uber','Soul Dew', 'Drizzle']
+	},
+	pokecyberbl: {
+		name: "PokeCyber BL",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['OU']
+	},	
+	pokecyberuu: {
+		name: "PokeCyber UU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['OU','BL']
+	},
+	pokecyberru: {
+		name: "PokeCyber RU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['UU','BL2','Drought','Sand Stream']
+	},
+	pokecybernu: {
+		name: "PokeCyber NU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['RU','BL3']
+	},
+	pokecyberlou: {
+		name: "PokeCyber LOU",
+		section: "PokeCyber Tiers",
+
+		mod: 'pokecybertiers',
+		effectType: 'Format',
+		rated: true,
+		challengeShow: true,
+		searchShow: true,
+		isTeambuilderFormat: true,
+		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
+		banlist: ['NU']
+	},	
 	randombattle: {
 		name: "Random Battle",
 		section: "Singles",
