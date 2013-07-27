@@ -442,6 +442,7 @@ var cmds = {
 		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status > 1) return this.sendReply('The tournament size cannot be changed now!');
+		if (tour.timers[room.id]) return this.sendReply('This tournament has an open number of participants. It cannot be resized');
 		if (!target) return this.sendReply('Proper syntax for this command: /toursize size');
 		target = parseInt(target);
 		if (isNaN(target)) return this.sendReply('Proper syntax for this command: /tour size');
@@ -450,6 +451,23 @@ var cmds = {
 		tour[room.id].size = target;
 		room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: ' + target + '. <b><i>' + (target - tour[room.id].players.length) + ' slots remaining.</b></i>');
 		if (target == tour[room.id].players.length) tour.start(room.id);
+	},
+
+	tourtime: function(target, room, user, connection) {
+		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
+		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
+		if (tour[room.id].status > 1) return this.sendReply('The tournament size cannot be changed now!');
+		if (!tour.timers[room.id]) return this.sendReply('This tournament is not running under a clock!');
+		if (!target) return this.sendReply('Proper syntax for this command: /tourtime time');
+		return this.sendReply('So far so good.');
+		target = parseInt(target);
+		if (isNaN(target)) return this.sendReply('Proper syntax for this command: /tourtime time');
+		target = Math.ceil(target);
+		tour.timers[room.id].time = target;
+		tour.timers[room.id].startTime = tour.currentSeconds;
+		room.addRaw('<b>' + user.name + '</b> has changed the remaining time for registering to the tournament to: ' + target + '.');
+		if (target === 0) tour.start(room.id);
 	},
 
 	jt: 'j',
