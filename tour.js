@@ -465,7 +465,7 @@ var cmds = {
 		target = Math.ceil(target);
 		tour.timers[room.id].time = target;
 		tour.timers[room.id].startTime = tour.currentSeconds;
-		room.addRaw('<b>' + user.name + '</b> has changed the remaining time for registering to the tournament to: ' + target + '.');
+		room.addRaw('<b>' + user.name + '</b> has changed the remaining time for registering to the tournament to: ' + target + (target === 1 ? ' minute.' : ' minutes.'));
 		if (target === 0) tour.start(room.id);
 	},
 
