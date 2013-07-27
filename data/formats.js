@@ -223,7 +223,7 @@ exports.BattleFormats = {
 		]
 	},
 
-	randommonotypeside: {
+	/*randommonotypeside: {
 		name: "Random Monotype (Side)",
 		section: "Singles",
 
@@ -235,7 +235,7 @@ exports.BattleFormats = {
 		challengeShow: true,
 		searchShow: true,
 		ruleset: ['Pokemon', 'HP Percentage Mod']
-	},
+	},*/
 
 	// Doubles
 	///////////////////////////////////////////////////////////////////
