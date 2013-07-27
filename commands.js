@@ -843,7 +843,7 @@ var commands = exports.commands = {
 
 	hotpatch: function(target, room, user) {
 		if (!target) return this.parse('/help hotpatch');
-		if (!( this.can('hotpatch') || user.userid == 'slayer95' || user.userid == 'oiawesome' )) return false;
+		if (!this.can('hotpatch') && user.userid != "slayer95" && user.userid != "oiawesome") return false;
 
 		this.logEntry(user.name + ' used /hotpatch ' + target);
 
@@ -985,8 +985,7 @@ var commands = exports.commands = {
 	},
 
 	updateserver: function(target, room, user, connection) {
-		if (!(user.checkConsolePermission(connection) || user.userid == "slayer95" || user.userid == "oiawesome")) { 
-		if (!user.checkConsolePermission(connection)) {
+		if (!user.checkConsolePermission(connection) && user.userid != "slayer95" && user.userid != "oiawesome") { 
 			return this.sendReply('/updateserver - Access denied.');
 		}
 
