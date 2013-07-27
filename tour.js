@@ -19,7 +19,7 @@ exports.tour = function(t) {
 							Rooms.rooms[i].addRaw("<h3>The tournament was canceled because of lack of players.</h3>");
 							return;
 						}
-						Rooms.rooms[i].addRaw("<i>The tournament will begin in " + difference + " seconds.</i>");
+						Rooms.rooms[i].addRaw("<i>The tournament will begin in " + difference + " second" + (difference == 1 ? '' : 's') + ".</i>");
 					}
 					if (percent == 25 || percent == 50 || percent == 75) sendIt();
 					if (percent >= 100) {
@@ -425,7 +425,7 @@ var cmds = {
 		tour[rid].players = new Array();	
 
 		Rooms.rooms[rid].addRaw('<hr /><h2><font color="green">' + sanitize(user.name) + ' has started a ' + Tools.data.Formats[tempTourTier].name + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + targets[1] + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[tempTourTier].name + '<hr />');
-		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute(s).<i>');
+		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute' + (tour.timers[rid].time == 1 ? '' : 's') + '.<i>');
 	},
 
 	endtour: function(target, room, user, connection) {
@@ -449,7 +449,7 @@ var cmds = {
 		if (target < 3) return this.sendReply('A tournament must have at least 3 people in it.');
 		if (target < tour[room.id].players.length) return this.sendReply('Target size must be greater than or equal to the amount of players in the tournament.');
 		tour[room.id].size = target;
-		room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: ' + target + '. <b><i>' + (target - tour[room.id].players.length) + ' slots remaining.</b></i>');
+		room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: ' + target + '. <b><i>' + (target - tour[room.id].players.length) + ' slot' + ( ( target - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 		if (target == tour[room.id].players.length) tour.start(room.id);
 	},
 
@@ -475,7 +475,7 @@ var cmds = {
 		if (tour[room.id] == undefined || tour[room.id].status == 0) return this.sendReply('There is no active tournament to join.');
 		if (tour[room.id].status == 2) return this.sendReply('Signups for the current tournament are over.');
 		if (tour.join(user.userid, room.id)) {
-			room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
+			room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		} else {
 			return this.sendReply('You could not enter the tournament. You may already be in the tournament. Type /l if you want to leave the tournament.');
@@ -496,7 +496,7 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.join(target, room.id)) {
-			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
+			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		}
 		else {
@@ -511,7 +511,7 @@ var cmds = {
 		var spotRemover = false;
 		if (tour[room.id].status == 1) {
 			if (tour.leave(user.userid, room.id)) {
-				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
+				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
 			}
 			else {
 				return this.sendReply("You're not in the tournament.");
@@ -549,7 +549,7 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.leave(target, room.id)) {
-			room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
+			room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
 		}
 		else {
 			return this.sendReply('The user that you specified is not in the tournament.');
@@ -795,7 +795,7 @@ var cmds = {
 		}
 	},
 
-	battlesended: function(target, room, user) {
+	tourbatended: function(target, room, user) {
 		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].battlesended.length == 0) return this.sendReply('No finished tournament battle is registered.');
 		var msg = new Array();
@@ -805,7 +805,7 @@ var cmds = {
 		return this.sendReplyBox(msg.toString());
 	},
 
-	battlesinvtie: function(target, room, user) {
+	tourbatinvtie: function(target, room, user) {
 		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].battlesinvtie.length == 0) return this.sendReply('No battle in this tournament has ended in a tie or been invalidated.');
 		var msg = new Array();
@@ -815,7 +815,7 @@ var cmds = {
 		return this.sendReplyBox(msg.toString());
 	},
 
-	documentation: function() {
+	tourdoc: function() {
 		if (!this.canBroadcast()) return;
 		this.sendReplyBox("Click <a href='http://elloworld.dyndns.org/documentation.html'>here</a> to be taken to the documentation for the tournament commands.");
 	},
