@@ -460,7 +460,6 @@ var cmds = {
 		if (tour[room.id].status > 1) return this.sendReply('The tournament size cannot be changed now!');
 		if (!tour.timers[room.id]) return this.sendReply('This tournament is not running under a clock!');
 		if (!target) return this.sendReply('Proper syntax for this command: /tourtime time');
-		return this.sendReply('So far so good.');
 		target = parseInt(target);
 		if (isNaN(target)) return this.sendReply('Proper syntax for this command: /tourtime time');
 		target = Math.ceil(target);
