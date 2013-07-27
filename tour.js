@@ -410,7 +410,7 @@ var cmds = {
 				time: targets[1],
 				startTime: tour.currentSeconds
 			};
-			targets[1] = 128;
+			targets[1] = Infinity;
 		}
 		else {
 			targets[1] = parseInt(targets[1]);
