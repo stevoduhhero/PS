@@ -51,7 +51,7 @@ exports.tour = function(t) {
 				round: new Array(),
 				history: new Array(),
 				byes: new Array(),
-				playerslogged: new Array(),
+				//playerslogged: new Array(),
 				battles: new Object(),
 				battlesended: new Array(),
 				battlesinvtie: new Array(),
@@ -531,7 +531,7 @@ var cmds = {
 			*/
 			
 			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
-			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+			//tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		}
 		else {
