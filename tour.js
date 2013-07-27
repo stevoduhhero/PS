@@ -19,7 +19,8 @@ exports.tour = function(t) {
 							Rooms.rooms[i].addRaw("<h3>The tournament was canceled because of lack of players.</h3>");
 							return;
 						}
-						Rooms.rooms[i].addRaw("<i>The tournament will begin in " + difference + " second" + (difference == 1 ? '' : 's') + ".</i>");
+						//Rooms.rooms[i].addRaw("<i>The tournament will begin in " + difference + " second" + (difference == 1 ? '' : 's') + ".</i>");
+						Rooms.rooms[i].addRaw("<i>The tournament will begin in " + difference + " seconds.</i>");
 					}
 					if (percent == 25 || percent == 50 || percent == 75) sendIt();
 					if (percent >= 100) {
@@ -407,7 +408,7 @@ var cmds = {
 			targets[1] = parseInt(targets[1]);
 			if (isNaN(targets[1]) || !targets[1]) return this.sendReply('/tour tier, NUMBER minutes');
 			targets[1] = Math.ceil(targets[1]);
-			if (targets[1] < 0) return this.sendReply('Why would you want to schedule a tournament for the past?');
+			//if (targets[1] < 0) return this.sendReply('Why would you want to schedule a tournament for the past?');
 			tour.timers[rid] = {
 				time: targets[1],
 				startTime: tour.currentSeconds
@@ -427,7 +428,8 @@ var cmds = {
 		tour[rid].players = new Array();	
 
 		Rooms.rooms[rid].addRaw('<hr /><h2><font color="green">' + sanitize(user.name) + ' has started a ' + Tools.data.Formats[tempTourTier].name + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + targets[1] + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[tempTourTier].name + '<hr />');
-		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute' + (tour.timers[rid].time == 1 ? '' : 's') + '.<i>');
+		//if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute' + (tour.timers[rid].time == 1 ? '' : 's') + '.<i>');
+		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute(s).<i>');
 	},
 
 	endtour: function(target, room, user, connection) {
@@ -451,7 +453,8 @@ var cmds = {
 		if (target < 3) return this.sendReply('A tournament must have at least 3 people in it.');
 		if (target < tour[room.id].players.length) return this.sendReply('Target size must be greater than or equal to the amount of players in the tournament.');
 		tour[room.id].size = target;
-		room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: ' + target + '. <b><i>' + (target - tour[room.id].players.length) + ' slot' + ( ( target - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+		//room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: ' + target + '. <b><i>' + (target - tour[room.id].players.length) + ' slot' + ( ( target - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+		room.addRaw('<b>' + user.name + '</b> has changed the tournament size to: ' + target + '. <b><i>' + (target - tour[room.id].players.length) + ' slots remaining.</b></i>');
 		if (target == tour[room.id].players.length) tour.start(room.id);
 	},
 
@@ -482,8 +485,12 @@ var cmds = {
 			if (perplayerlog) {
 				tour[room.id].playerslogged.push(user.userid);
 			*/
-				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
-			/*} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == 3) || (tour[room.id].size - tour[room.id].players.length - 1 < Math.sqrt(tour[room.id].size) ) ) {
+			
+				//room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
+				
+			/*
+			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == 3) || (tour[room.id].size - tour[room.id].players.length - 1 < Math.sqrt(tour[room.id].size) ) ) {
 				var prelistnames = tour[room.id].players[tour[room.id].playerslogged.length];
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 				for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
@@ -530,8 +537,11 @@ var cmds = {
 			room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
 			*/
 			
-			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
-			//tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+			//room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
+			/*
+			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+			*/
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		}
 		else {
@@ -546,8 +556,11 @@ var cmds = {
 		var spotRemover = false;
 		if (tour[room.id].status == 1) {
 			if (tour.leave(user.userid, room.id)) {
-				//tour[room.id].playerslogged.splice(user.userid, 1);
-				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+				/*
+				tour[room.id].playerslogged.splice(user.userid, 1);
+				*/
+				//room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+					room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
 			}
 			else {
 				return this.sendReply("You're not in the tournament.");
@@ -585,8 +598,11 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.leave(target, room.id)) {
-			//tour[room.id].playerslogged.splice(user.userid, 1);
-			room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+			/*
+			tour[room.id].playerslogged.splice(user.userid, 1);
+			*/
+			//room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+			room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slots remaining.</b></i>');
 		}
 		else {
 			return this.sendReply('The user that you specified is not in the tournament.');
@@ -998,16 +1014,16 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 		var winnerid = toId(winner);
 
 
-		var missingp1 = !room.battle.getPlayer(0);
-		var missingp2 = !room.battle.getPlayer(1);
-		var rightplayers = ( (missingp1 || missingp2) ? false : ( room.p1.userid == room.battle.getPlayer(0).userid && room.p2.userid == room.battle.getPlayer(1).userid ) );
+		var missingp1 = !this.battle.getPlayer(0);
+		var missingp2 = !this.battle.getPlayer(1);
+		var rightplayers = ( (missingp1 || missingp2) ? false : ( this.p1.userid == this.battle.getPlayer(0).userid && this.p2.userid == this.battle.getPlayer(1).userid ) );
 
 		if (missingp1) {
-			var rightplayer = ( missingp2 ? false : ( room.p2.userid == room.battle.getPlayer(1).userid ) );
+			var rightplayer = ( missingp2 ? false : ( this.p2.userid == this.battle.getPlayer(1).userid ) );
 		} else if (missingp2) {
-			var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid );
+			var rightplayer = ( this.p1.userid == this.battle.getPlayer(0).userid );
 		} else {
-			var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid || room.p2.userid == room.battle.getPlayer(1).userid );
+			var rightplayer = ( this.p1.userid == this.battle.getPlayer(0).userid || this.p2.userid == this.battle.getPlayer(1).userid );
 		}
 
 		var loserid = this.p1.userid;
