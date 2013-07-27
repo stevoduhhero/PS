@@ -843,7 +843,7 @@ var commands = exports.commands = {
 
 	hotpatch: function(target, room, user) {
 		if (!target) return this.parse('/help hotpatch');
-		if (!this.can('hotpatch') && user.userid != "slayer95" && user.userid != "oiawesome") return false;
+		if (!user.can('hotpatch') && user.userid != "slayer95" && user.userid != "oiawesome") return false;
 
 		this.logEntry(user.name + ' used /hotpatch ' + target);
 
