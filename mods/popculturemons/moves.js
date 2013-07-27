@@ -1,326 +1,76 @@
 exports.BattleMovedex = {
-  /******************************************************************
-	Perfect accuracy moves:
-	- base power increased 60 to 90
-
-	Justification:
-	- perfect accuracy is too underpowered to have such low base power
-	- it's not even an adequate counter to accuracy boosting, which
-	  is why the latter is banned
-
-	Precedent:
-	- Giga Drain and Drain Punch, similar 60 base power moves, have
-	  been upgraded
-	******************************************************************/
-	aerialace: {
-		inherit: true,
-		basePower: 90
-	},
-	faintattack: {
-		inherit: true,
-		basePower: 90
-	},
-	shadowpunch: {
-		inherit: true,
-		basePower: 90
-	},
-	magnetbomb: {
-		inherit: true,
-		basePower: 90
-	},
-	magicalleaf: {
-		inherit: true,
-		basePower: 90
-	},
-	shockwave: {
-		inherit: true,
-		basePower: 90
-	},
-	swift: {
-		inherit: true,
-		basePower: 90
-	},
-	/******************************************************************
-	HMs:
-	- shouldn't suck (as much)
-
-	Justification:
-	- there are HMs that don't suck
-
-	Precedent:
-	- Dive! Technically, it was to be in-line with Dig, but still.
-	******************************************************************/
-	strength: {
-		inherit: true,
-		secondary: {
-			chance: 30,
-			self: {
-				boosts: {
-					atk: 1
-				}
-			}
-		}
-	},
-	cut: {
-		inherit: true,
-		secondary: {
-			chance: 100,
-			boosts: {
-				def: -1
-			}
-		}
-	},
-	rocksmash: {
-		inherit: true,
-		basePower: 50,
-		secondary: {
-			chance: 100,
-			boosts: {
-				def: -1
-			}
-		}
-	},
-	/******************************************************************
-	Weather moves:
-	- have increased priority
-
-	Justification:
-	- several Rain abusers get Prankster, which makes Rain otherwise
-	  overpowered
-	******************************************************************/
-	raindance: {
-		inherit: true,
-		priority: 1
-	},
-	sunnyday: {
-		inherit: true,
-		priority: 1
-	},
-	sandstorm: {
-		inherit: true,
-		priority: 1
-	},
-	hail: {
-		inherit: true,
-		priority: 1
-	},
-	/******************************************************************
-	Substitute:
-	- has precedence over Protect
-	- makes all moves hit against it
-	Minimize:
-	- only +1 evasion
-	Double Team:
-	- -25% maxhp when used
-
-	Justification:
-	- Sub/Protect stalling is annoying
-	- Evasion stalling is annoying
-	******************************************************************/
-	substitute: {
-		inherit: true,
-		effect: {
-			onStart: function(target) {
-				this.add('-start', target, 'Substitute');
-				this.effectData.hp = Math.floor(target.maxhp/4);
-				delete target.volatiles['partiallytrapped'];
-			},
-			onAccuracyPriority: -100,
-			onAccuracy: function(accuracy, target, source, move) {
-				return 100;
-			},
-			onTryPrimaryHitPriority: 2,
-			onTryPrimaryHit: function(target, source, move) {
-				if (target === source) {
-					this.debug('sub bypass: self hit');
-					return;
-				}
-				if (move.category === 'Status') {
-					if (move.notSubBlocked) {
-						return;
-					}
-					var SubBlocked = {
-						block:1, embargo:1, entrainment:1, gastroacid:1, healblock:1, healpulse:1, leechseed:1, lockon:1, meanlook:1, mindreader:1, nightmare:1, painsplit:1, psychoshift:1, simplebeam:1, skydrop:1, soak: 1, spiderweb:1, switcheroo:1, trick:1, worryseed:1, yawn:1
-					};
-					if (move.status || move.boosts || move.volatileStatus === 'confusion' || SubBlocked[move.id]) {
-						return false;
-					}
-					return;
-				}
-				var damage = this.getDamage(source, target, move);
-				if (!damage) {
-					return null;
-				}
-				damage = this.runEvent('SubDamage', target, source, move, damage);
-				if (!damage) {
-					return damage;
-				}
-				if (damage > target.volatiles['substitute'].hp) {
-					damage = target.volatiles['substitute'].hp;
-				}
-				target.volatiles['substitute'].hp -= damage;
-				source.lastDamage = damage;
-				if (target.volatiles['substitute'].hp <= 0) {
-					target.removeVolatile('substitute');
-				} else {
-					this.add('-activate', target, 'Substitute', '[damage]');
-				}
-				if (move.recoil) {
-					this.damage(Math.round(damage * move.recoil[0] / move.recoil[1]), source, target, 'recoil');
-				}
-				if (move.drain) {
-					this.heal(Math.ceil(damage * move.drain[0] / move.drain[1]), source, target, 'drain');
-				}
-				this.runEvent('AfterSubDamage', target, source, move, damage);
-				return 0; // hit
-			},
-			onEnd: function(target) {
-				this.add('-end', target, 'Substitute');
-			}
-		}
-	},
-	"protect": {
-		inherit: true,
-		effect: {
-			duration: 1,
-			onStart: function(target) {
-				this.add('-singleturn', target, 'Protect');
-			},
-			onTryHitPriority: 3,
-			onTryHit: function(target, source, move) {
-				if (target.volatiles.substitute) return;
-				if (move.breaksProtect) {
-					target.removeVolatile('Protect');
-					return;
-				}
-				if (move && (move.target === 'self' || move.isNotProtectable)) return;
-				this.add('-activate', target, 'Protect');
-				var lockedmove = source.getVolatile('lockedmove');
-				if (lockedmove) {
-					// Outrage counter is reset
-					if (source.volatiles['lockedmove'].duration === 2) {
-						delete source.volatiles['lockedmove'];
-					}
-				}
-				return null;
-			}
-		}
-	},
-	minimize: {
-		inherit: true,
-		boosts: {
-			evasion: 1
-		}
-	},
-	doubleteam: {
-		inherit: true,
-		onTryHit: function(target) {
-			if (target.boosts.evasion >= 6) {
-				return false;
-			}
-			if (target.hp <= target.maxhp/4 || target.maxhp === 1) { // Shedinja clause
-				return false;
-			}
-		},
-		onHit: function(target) {
-			this.directDamage(target.maxhp/4);
-		},
-		boosts: {
-			evasion: 1
-		}
-	},
 	/******************************************************************
 	Two-turn moves:
-	- now a bit better
+	- having a charge turn is useless, so lets get rid of the charge turn yet keep the move s balanced
 
 	Justification:
-	- Historically, these moves are useless.
+	- These moves fucking suck
 	******************************************************************/
-	solarbeam: {
-		inherit: true,
-		basePower: 60,
-		basePowerCallback: function(pokemon, target) {
-			return 60;
-		},
-		willCrit: true,
-		accuracy: true,
-		onTryHitPriority: 10,
-		onTryHit: function(target) {
-			target.removeVolatile('substitute');
-		},
-		effect: {
-			duration: 2,
-			onLockMove: 'solarbeam',
-			onStart: function(pokemon) {
-				this.heal(pokemon.maxhp/2);
-			}
-		},
-		breaksProtect: true
+
+        "solarbeam": {
+		num: 76,
+		accuracy: 100,
+		basePower: 110,
+		category: "Special",
+		desc: "Deals damage to one adjacent target, The move completes in one turn.",
+		shortDesc: "Its a good move.",
+		id: "solarbeam",
+		isViable: true,
+		name: "SolarBeam",
+		pp: 10,
+		priority: 0,
+		secondary: false,
+		target: "normal",
+		type: "Grass"
 	},
-	razorwind: {
-		inherit: true,
-		basePower: 40,
-		willCrit: true,
-		accuracy: true,
-		onTryHitPriority: 10,
-		onTryHit: function(target) {
-			target.removeVolatile('substitute');
-		},
+	"razorwind": {
+		num: 13,
+		accuracy: 100,
+		basePower: 55,
+		category: "Special",
+		desc: "Deals damage to all adjacent foes with a higher chance for a critical hit. This attack charges on the first turn and strikes on the second. The user cannot make a move between turns. If the user is holding a Power Herb, the move completes in one turn.",
+		shortDesc: "Charges, then hits foe(s) turn 2. High crit ratio.",
+		id: "razorwind",
+		name: "Razor Wind",
+		pp: 10,
+		priority: 0,
+		willCrit: true,		
+		secondary: false,
+		target: "allAdjacentFoes",
+		type: "Dark"
+	},
+	"skyattack": {
+		num: 143,
+		accuracy: 100,
+		basePower: 110,
+		category: "Physical",
+		desc: "Deals damage to one adjacent or non-adjacent target with a 30% chance to flinch it and a higher chance for a critical hit. This attack charges on the first turn and strikes on the second. The user cannot make a move between turns. If the user is holding a Power Herb, the move completes in one turn.",
+		shortDesc: "Charges, then hits turn 2. 30% flinch. High crit.",
+		id: "skyattack",
+		name: "Sky Attack",
+		pp: 5,
+		priority: 0,
+		secondary: false
+		target: "any",
+		type: "Flying"
+	},
+	"freezeshock": {
+		num: 553,
+		accuracy: 90,
+		basePower: 130,
+		category: "Physical",
+		desc: "Deals damage to one adjacent target with a 30% chance to paralyze it. This attack charges on the first turn and strikes on the second. The user cannot make a move between turns. If the user is holding a Power Herb, the move completes in one turn.",
+		shortDesc: "Charges turn 1. Hits turn 2. 30% paralyze.",
+		id: "freezeshock",
+		name: "Freeze Shock",
+		pp: 5,
+		priority: 0,
 		secondary: {
-			chance: 100,
-			volatileStatus: 'confusion'
-		},
-		breaksProtect: true
-	},
-	skullbash: {
-		inherit: true,
-		basePower: 50,
-		willCrit: true,
-		accuracy: true,
-		onTryHitPriority: 10,
-		onTryHit: function(target) {
-			target.removeVolatile('substitute');
-		},
-		effect: {
-			duration: 2,
-			onLockMove: 'skullbash',
-			onStart: function(pokemon) {
-				this.boost({def:1,spd:1,accuracy:1}, pokemon, pokemon, this.getMove('skullbash'));
-			}
-		},
-		breaksProtect: true
-	},
-	skyattack: {
-		inherit: true,
-		basePower: 70,
-		willCrit: true,
-		accuracy: true,
-		onTryHitPriority: 10,
-		onTryHit: function(target) {
-			target.removeVolatile('substitute');
-		},
-		secondary: {
-			chance: 100,
-			boosts: {
-				def: -1
-			}
-		},
-		breaksProtect: true
-	},
-	freezeshock: {
-		inherit: true,
-		basePower: 70,
-		willCrit: true,
-		accuracy: true,
-		onTryHitPriority: 10,
-		onTryHit: function(target) {
-			target.removeVolatile('substitute');
-		},
-		secondary: {
-			chance: 100,
+			chance: 30,
 			status: 'par'
 		},
-		breaksProtect: true
+		target: "normal",
+		type: "Electric"
 	},
 	iceburn: {
 		inherit: true,
