@@ -51,9 +51,7 @@ exports.tour = function(t) {
 				round: new Array(),
 				history: new Array(),
 				byes: new Array(),
-				/*
 				playerslogged: new Array(),
-				*/
 				battles: new Object(),
 				battlesended: new Array(),
 				battlesinvtie: new Array(),
@@ -479,15 +477,10 @@ var cmds = {
 		if (tour[room.id] == undefined || tour[room.id].status == 0) return this.sendReply('There is no active tournament to join.');
 		if (tour[room.id].status == 2) return this.sendReply('Signups for the current tournament are over.');
 		if (tour.join(user.userid, room.id)) {
-			/*
 			var perplayerlog = ( ( tour[room.id].players.length < Math.sqrt(tour[room.id].size) ) || ( tour[room.id].size - tour[room.id].players.length < Math.sqrt(tour[room.id].size)) )
 			if (perplayerlog) {
 				tour[room.id].playerslogged.push(user.userid);
-			*/
-			
-				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
-				
-			/*
+				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');		
 			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == 3) || (tour[room.id].size - tour[room.id].players.length - 1 < Math.sqrt(tour[room.id].size) ) ) {
 				var prelistnames = tour[room.id].players[tour[room.id].playerslogged.length];
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
@@ -501,7 +494,6 @@ var cmds = {
 			} else {
 				this.sendReply('You have succesfully joined the tournament.' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.');
 			}
-			*/
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		} else {
 			return this.sendReply('You could not enter the tournament. You may already be in the tournament. Type /l if you want to leave the tournament.');
@@ -523,7 +515,6 @@ var cmds = {
 		}
 		if (tour.join(target, room.id)) {
 			
-			/*
 			var prelistnames = tour[room.id].players[tour[room.id].playerslogged.length];
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 			for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 2; i++) {
@@ -533,12 +524,9 @@ var cmds = {
 			var listnames = prelistnames + ' and ' + tour[room.id].players[tour[room.id].players.length - 2;
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 2]);
 			room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
-			*/
 			
 			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
-			/*
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
-			*/
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		}
 		else {
@@ -553,9 +541,7 @@ var cmds = {
 		var spotRemover = false;
 		if (tour[room.id].status == 1) {
 			if (tour.leave(user.userid, room.id)) {
-				/*
 				tour[room.id].playerslogged.splice(user.userid, 1);
-				*/
 				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			else {
@@ -594,9 +580,7 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.leave(target, room.id)) {
-			/*
 			tour[room.id].playerslogged.splice(user.userid, 1);
-			*/
 			room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 		}
 		else {
