@@ -23,10 +23,10 @@ exports.BattleAbilities = {
 		num: 1000 
 	},
 	"androidheart": {
-		desc: "Will raise the user's SpAttack stat one level when hit by any -type moves. Unlike other abilities with immunity to certain typed moves, the user will still receive damage from the attack. Adroid Heart will raise Attack one level for each hit of a multi-hit move like Beat Up.",
-		shortDesc: "This Pokemon's SpAttack is boosted by 1 after it is damaged by a -type attack.",
+		desc: "Will raise the user's SpAttack stat one level when hit by any Rock-type moves. Unlike other abilities with immunity to certain typed moves, the user will still receive damage from the attack. Adroid Heart will raise Attack one level for each hit of a multi-hit move like Rock Blast.",
+		shortDesc: "This Pokemon's SpAttack is boosted by 1 after it is damaged by a Rock-type attack.",
 		onAfterDamage: function(damage, target, source, effect) {
-			if (effect && effect.type === '') {
+			if (effect && effect.type === 'Rock') {
 				this.boost({spa:1});
 			}
 		},
