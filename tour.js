@@ -482,30 +482,32 @@ var cmds = {
 			var logperiod = Math.ceil(Math.sqrt(tour[room.id].size));
 			var perplayerlog = ( ( tour[room.id].players.length < pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length < pplogmarg ) );
 			//
+			
 			if (perplayerlog) {
+				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				tour[room.id].playerslogged.push(user.userid);
-				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');		
 			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == logperiod) || (tour[room.id].size - tour[room.id].players.length - 1 < Math.sqrt(tour[room.id].size) ) ) {
-				if (playerslogged.length == players.length - 1) {
-					room.addRaw('<b>' + target + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
-					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
-				} else {
-					var prelistnames = '<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b>';
-					for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
-						prelistnames = prelistnames + ', <b>' + tour[room.id].players[i] + '</b>';
-					}
-					var listnames = prelistnames + ' and <b>' + tour[room.id].players[tour[room.id].players.length - 1] + '</b>';
-					room.addRaw(listnames + ' have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
-				
-					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
-					for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
-						tour[room.id].playerslogged.push(tour[room.id].players[i]);
-					}
-					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
-				}
+			//	if (playerslogged.length == players.length - 1) {
+			//		room.addRaw('<b>' + target + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+			//		tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+			//	} else {
+			//		var prelistnames = '<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b>';
+			//		for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
+			//			prelistnames = prelistnames + ', <b>' + tour[room.id].players[i] + '</b>';
+			//		}
+			//		var listnames = prelistnames + ' and <b>' + tour[room.id].players[tour[room.id].players.length - 1] + '</b>';
+			//		room.addRaw(listnames + ' have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+			//	
+			//		tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+			//		for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
+			//			tour[room.id].playerslogged.push(tour[room.id].players[i]);
+			//		}
+			//		tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+			//	}
 			} else {
 				this.sendReply('You have succesfully joined the tournament. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.');
 			}
+			
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		} else {
 			return this.sendReply('You could not enter the tournament. You may already be in the tournament. Type /l if you want to leave the tournament.');
