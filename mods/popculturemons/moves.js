@@ -1,7 +1,7 @@
 exports.BattleMovedex = {
 	/******************************************************************
 	Two-turn moves:
-	- having a charge turn is useless, so lets get rid of the charge turn yet keep the move s balanced
+	- having a charge turn is useless, so lets get rid of the charge turn yet keep the moves balanced
 
 	Justification:
 	- These moves fucking suck
@@ -131,7 +131,7 @@ exports.BattleMovedex = {
 		type: "Techno"
 	},
 	"chargebuster": {
-		num: 126,
+		num: 802,
 		accuracy: 85,
 		basePower: 120,
 		category: "Special",
@@ -145,14 +145,108 @@ exports.BattleMovedex = {
 		secondary: false,
 		target: "normal",
 		type: "Techno"
-	},	
+	},
+	"hyperbomb": {
+		num: 803,
+		accuracy: 100,
+		basePower: 100,
+		category: "Physical",
+		desc: "Deals damage to one adjacent target.",
+		shortDesc: "The hyper bomb from Bomb Man in MM1.",
+		id: "hyperbomb",
+		isViable: true,
+		name: "Hyper Bomb",
+		pp: 10,
+		priority: 0,
+		secondary: false,
+		target: "normal",
+		type: "Normal"
+	},
+	"atomiceradication": {
+		num: 804,
+		accuracy: 85,
+		basePower: 300,
+		category: "Physical",
+		desc: "Deals damage to one adjacent target.",
+		shortDesc: "A good move.",
+		id: "atomiceradication",
+		isViable: true,
+		name: "Atomic Eradication",
+		pp: 5,
+		priority: 0,
+		secondary: false,
+		target: "normal",
+		type: "Techno"
+	},
+	"firestorm": {
+		num: 805,
+		accuracy: 100,
+		basePower: 100,
+		category: "Physical",
+		desc: "Deals damage to one adjacent target.",
+		shortDesc: "The hyper bomb from Bomb Man in MM1.",
+		id: "firestorm",
+		isViable: true,
+		name: "Fire Storm",
+		pp: 10,
+		priority: 0,
+		secondary: false,
+		target: "normal",
+		type: "Fire"
+	},
+	/**"ascension": {
+		num: 806,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		desc: "Turns a Saiyan into a super saiyan.",
+		shortDesc: "Turns Saiyan to Super Saiyan.",
+		id: "ascension",
+		name: "Ascension",
+		pp: 15,
+		priority: 0,
+		isContact: true,
+		isTwoTurnMove: true,
+		onTry: function(attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name, defender);
+			attacker.addVolatile(move.id, defender);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				this.add('-anim', attacker, move.name, defender);
+				attacker.removeVolatile(move.id);
+				return;
+			}
+			return null;
+		},
+		onHit: function(target, pokemon) {
+			if (pokemon.baseTemplate.species === 'Goku' && !pokemon.transformed) {
+				pokemon.addVolatile('ascension');
+			}
+		},
+		effect: {
+			duration: 1,
+			onAfterMoveSecondarySelf: function(pokemon, target, move) {
+				if (pokemon.template.speciesid === 'gokusupersaiyan' && pokemon.formeChange('Meloetta')) {
+					this.add('-formechange', pokemon, 'Meloetta');
+				} else if (pokemon.formeChange('Meloetta-Pirouette')) {
+					this.add('-formechange', pokemon, 'Meloetta-Pirouette');
+				}
+				pokemon.removeVolatile('relicsong');
+			}
+		},
+		secondary: false,
+		target: "normal",
+		type: "Normal"
+	},**/	
 	/******************************************************************
 	New feature: Signature Pokemon
 	- Selected weak moves receive a 1.5x damage boost when used by a
 	  compatible Pokemon or something else that can compare to a 1.5x damage boost.
 
 	Justification:
-	- Adds much flavour and justm akes sense out of a LOT of things
+	- Adds much flavour and just makes sense out of a LOT of things
 	- Your telling me mega man doesn't deserve 1.5x boost on his mega buster?'
 	******************************************************************/
 	megabuster: {
@@ -161,6 +255,18 @@ exports.BattleMovedex = {
 			if (user.template.id === 'megaman') return power * 1.5;
 		}
 	},
+	firestorm: {
+		inherit: true,
+		onBasePower: function(power, user) {
+			if (user.template.id === 'megamanfire') return power * 1.5;
+		}
+	},
+	hyperbomb: {
+		inherit: true,
+		onBasePower: function(power, user) {
+			if (user.template.id === 'megamanbomb') return power * 1.5;
+		}
+	},	
 	multibuster: {
 		inherit: true,
 		onBasePower: function(power, user) {
