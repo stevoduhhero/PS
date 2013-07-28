@@ -20,6 +20,19 @@ exports.BattleAbilities = {
 		id: "robotic",
 		name: "Robotic",
 		rating: 4,
-		num: 1005 
+		num: 1000 
 	},
+	"androidheart": {
+		desc: "Will raise the user's SpAttack stat one level when hit by any -type moves. Unlike other abilities with immunity to certain typed moves, the user will still receive damage from the attack. Adroid Heart will raise Attack one level for each hit of a multi-hit move like Beat Up.",
+		shortDesc: "This Pokemon's SpAttack is boosted by 1 after it is damaged by a -type attack.",
+		onAfterDamage: function(damage, target, source, effect) {
+			if (effect && effect.type === '') {
+				this.boost({spa:1});
+			}
+		},
+		id: "justified",
+		name: "Justified",
+		rating: 2,
+		num: 1001
+	}	
 };  
