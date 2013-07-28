@@ -488,7 +488,7 @@ var cmds = {
 					prelistnames = prelistnames + ', ' + tour[room.id].players[i];
 				}
 				var listnames = prelistnames + ' and ' + tour[room.id].players[tour[room.id].players.length - 1];
-				room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+				room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 				for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
@@ -497,7 +497,7 @@ var cmds = {
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 				
 			} else {
-				this.sendReply('You have succesfully joined the tournament.' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.');
+				this.sendReply('You have succesfully joined the tournament. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.');
 			}
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		} else {
@@ -521,14 +521,17 @@ var cmds = {
 		if (tour.join(target, room.id)) {
 			
 			var prelistnames = tour[room.id].players[tour[room.id].playerslogged.length];
-			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 			for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 2; i++) {
 				prelistnames = prelistnames + ', ' + tour[room.id].players[i];
-				tour[room.id].playerslogged.push(tour[room.id].players[i]);
 			}
 			var listnames = prelistnames + ' and ' + tour[room.id].players[tour[room.id].players.length - 2];
+			room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+			
+			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+			for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 2; i++) {
+				tour[room.id].playerslogged.push(tour[room.id].players[i]);
+			}
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 2]);
-			room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
 			
 			room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
