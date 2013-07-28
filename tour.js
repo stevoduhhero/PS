@@ -477,8 +477,11 @@ var cmds = {
 		if (tour[room.id] == undefined || tour[room.id].status == 0) return this.sendReply('There is no active tournament to join.');
 		if (tour[room.id].status == 2) return this.sendReply('Signups for the current tournament are over.');
 		if (tour.join(user.userid, room.id)) {
-			var perplayerlog = ( ( tour[room.id].players.length < Math.sqrt(tour[room.id].size) ) || ( tour[room.id].size - tour[room.id].players.length < Math.sqrt(tour[room.id].size)) );
-			var logperiod = 3;
+			// these two assignments are done as wished
+			var pplogmarg = Math.ceil(Math.sqrt(tour[room.id].size) / 2);
+			var logperiod = Math.ceil(Math.sqrt(tour[room.id].size));
+			//
+			var perplayerlog = ( ( tour[room.id].players.length < pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length < pplogmarg ) );
 			if (perplayerlog) {
 				tour[room.id].playerslogged.push(user.userid);
 				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');		
