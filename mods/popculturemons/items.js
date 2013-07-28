@@ -9,8 +9,8 @@ exports.BattleItems = {
 		onStart: function (pokemon) {
 			if (pokemon.species === 'Megaman') {
 				this.add('-item', pokemon, 'DWN-007 Flames');
-				if (pokemon.formeChange('Megaman Fire')) {
-					this.add('-formechange', pokemon, 'Megaman Fire');
+				if (pokemon.formeChange('Megaman-Fire')) {
+					this.add('-formechange', pokemon, 'Megaman-Fire');
 				}
 			}
 		},
@@ -26,8 +26,8 @@ exports.BattleItems = {
 		onStart: function (pokemon) {
 			if (pokemon.species === 'Megaman') {
 				this.add('-item', pokemon, 'DWN-006 Bomb');
-				if (pokemon.formeChange('Megaman Bomb')) {
-					this.add('-formechange', pokemon, 'Megaman Bomb');
+				if (pokemon.formeChange('Megaman-Bomb')) {
+					this.add('-formechange', pokemon, 'Megaman-Bomb');
 				}
 			}
 		},
