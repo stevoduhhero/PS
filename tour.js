@@ -480,7 +480,7 @@ var cmds = {
 			// these three assignments (integer, integer, boolean) are done as wished
 			var pplogmarg = Math.ceil(Math.sqrt(tour[room.id].size) / 2);
 			var logperiod = Math.ceil(Math.sqrt(tour[room.id].size));
-			var perplayerlog = ( ( tour[room.id].players.length < pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length < pplogmarg ) );
+			var perplayerlog = ( ( tour[room.id].players.length <= pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length <= pplogmarg ) );
 			//
 			
 			if (perplayerlog) {
