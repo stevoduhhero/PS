@@ -1,101 +1,36 @@
 exports.BattleItems = {
-  "burndrive": {
-		id: "burndrive",
-		name: "Burn Drive",
+	"dwn006flames": {
+		id: "dwn007flames",
+		name: "DWN-007 Flames",
 		spritenum: 103,
 		fling: {
 			basePower: 70
 		},
 		onStart: function (pokemon) {
-			if (pokemon.species === 'Genesect') {
-				this.add('-item', pokemon, 'Burn Drive');
-				if (pokemon.formeChange('Genesect-Burn')) {
-					this.add('-formechange', pokemon, 'Genesect-Burn');
+			if (pokemon.species === 'Megaman') {
+				this.add('-item', pokemon, 'DWN-007 Flames');
+				if (pokemon.formeChange('Megaman Fire')) {
+					this.add('-formechange', pokemon, 'Megaman Fire');
 				}
 			}
 		},
-		onBasePower: function(basePower, user, target, move) {
-			if (move.id === 'technoblast') {
-				return basePower * 1.1;
-			}
-		},
-		onDrive: 'Fire',
-		desc: "Changes Genesect to Genesect-Burn."
-	},
-	"chilldrive": {
-		id: "chilldrive",
-		name: "Chill Drive",
+		desc: "Changes Megaman to Megaman-Fire."
+	}
+	"dwn006bomb": {
+		id: "dwn006bomb",
+		name: "DWN-006 Bomb",
 		spritenum: 103,
 		fling: {
 			basePower: 70
 		},
 		onStart: function (pokemon) {
-			if (pokemon.species === 'Genesect') {
-				this.add('-item', pokemon, 'Chill Drive');
-				if (pokemon.formeChange('Genesect-Chill')) {
-					this.add('-formechange', pokemon, 'Genesect-Chill');
+			if (pokemon.species === 'Megaman') {
+				this.add('-item', pokemon, 'DWN-006 Bomb');
+				if (pokemon.formeChange('Megaman Bomb')) {
+					this.add('-formechange', pokemon, 'Megaman Bomb');
 				}
 			}
 		},
-		onBasePower: function(basePower, user, target, move) {
-			if (move.id === 'technoblast') {
-				return basePower * 1.1;
-			}
-		},
-		onDrive: 'Ice',
-		desc: "Changes Genesect to Genesect-Chill."
-	},
-	"dousedrive": {
-		id: "dousedrive",
-		name: "Douse Drive",
-		spritenum: 103,
-		fling: {
-			basePower: 70
-		},
-		onStart: function (pokemon) {
-			if (pokemon.species === 'Genesect') {
-				this.add('-item', pokemon, 'Douse Drive');
-				if (pokemon.formeChange('Genesect-Douse')) {
-					this.add('-formechange', pokemon, 'Genesect-Douse');
-				}
-			}
-		},
-		onBasePower: function(basePower, user, target, move) {
-			if (move.id === 'technoblast') {
-				return basePower * 1.1;
-			}
-		},
-		onDrive: 'Water',
-		desc: "Changes Genesect to Genesect-Douse."
-	},
-	"shockdrive": {
-		id: "shockdrive",
-		name: "Shock Drive",
-		spritenum: 103,
-		fling: {
-			basePower: 70
-		},
-		onStart: function (pokemon) {
-			if (pokemon.species === 'Genesect') {
-				this.add('-item', pokemon, 'Shock Drive');
-				if (pokemon.formeChange('Genesect-Shock')) {
-					this.add('-formechange', pokemon, 'Genesect-Shock');
-				}
-			}
-		},
-		onBasePower: function(basePower, user, target, move) {
-			if (move.id === 'technoblast') {
-				return basePower * 1.1;
-			}
-		},
-		onDrive: 'Electric',
-		desc: "Changes Genesect to Genesect-Shock."
-	},
-	"widelens": {
-		inherit: true,
-		onModifyMove: function(move, user, target) {
-			if (typeof move.accuracy === 'number') {
-				move.accuracy *= 1.3;
-			}
-		}
-	},
+		desc: "Changes Megaman to Megaman-Bomb."
+	}
+};	
