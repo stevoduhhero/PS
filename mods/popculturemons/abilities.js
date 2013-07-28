@@ -30,8 +30,8 @@ exports.BattleAbilities = {
 				this.boost({spa:1});
 			}
 		},
-		id: "justified",
-		name: "Justified",
+		id: "androidheart",
+		name: "Android Heart",
 		rating: 2,
 		num: 1001
 	}	
