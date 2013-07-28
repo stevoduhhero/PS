@@ -895,6 +895,7 @@ var cmds = {
 		if (!user.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
 		if (!tour[room.id].question) return this.sendReply('There is no poll to end in this room.');
 		var votes = Object.keys(tour[room.id].answers).length;
+		if (votes == 0) room.addRaw("<h3>The poll was canceled because of lack of voters.</h3>");
 		var options = new Object();
 		var obj = tour[room.id];
 		for (var i in obj.answerList) options[obj.answerList[i]] = 0;
