@@ -498,11 +498,11 @@ var cmds = {
 					//var listnames = prelistnames + ' and <b>' + tour[room.id].players[tour[room.id].players.length - 1] + '</b>';
 					//room.addRaw(listnames + ' have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				
-					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
-					for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
-						tour[room.id].playerslogged.push(tour[room.id].players[i]);
-					}
-					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+					//tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+					//for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
+					//	tour[room.id].playerslogged.push(tour[room.id].players[i]);
+					//}
+					//tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 					room.addRaw('just testing');
 				}
 			} else {
