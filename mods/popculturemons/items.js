@@ -15,7 +15,7 @@ exports.BattleItems = {
 			}
 		},
 		desc: "Changes Megaman to Megaman-Fire."
-	}
+	},
 	"dwn006bomb": {
 		id: "dwn006bomb",
 		name: "DWN-006 Bomb",
