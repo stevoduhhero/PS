@@ -488,7 +488,7 @@ var cmds = {
 				tour[room.id].playerslogged.push(user.userid);
 			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == logperiod) || (tour[room.id].size - tour[room.id].players.length - 1 < Math.sqrt(tour[room.id].size) ) ) {
 				if (tour[room.id].playerslogged.length == tour[room.id].players.length - 1) {
-					room.addRaw('<b>' + target + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+					room.addRaw('<b>' + user.userid + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 				} else {
 					var prelistnames = '<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b>';
