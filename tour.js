@@ -553,8 +553,12 @@ var cmds = {
 		var spotRemover = false;
 		if (tour[room.id].status == 1) {
 			if (tour.leave(user.userid, room.id)) {
-				tour[room.id].playerslogged.splice(user.userid, 1);
-				room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+				if (tour[room.id].playerslogged.indexOf(user.userid) == -1) {
+					return this.sendReply('You have left the tournament. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.');
+				} else {
+					tour[room.id].playerslogged.splice(user.userid, 1);
+					room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+				}
 			}
 			else {
 				return this.sendReply("You're not in the tournament.");
@@ -592,8 +596,13 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.leave(target, room.id)) {
-			tour[room.id].playerslogged.splice(user.userid, 1);
-			room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+			if (tour[room.id].playerslogged.indexOf(target.userid) == -1) {
+				room.addRaw('<b>' + target + '</b> joined the tournament but was forced to leave by ' + user.name + '. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+			}
+			else {
+				tour[room.id].playerslogged.splice(target.userid, 1);
+				room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+			}
 		}
 		else {
 			return this.sendReply('The user that you specified is not in the tournament.');
