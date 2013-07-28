@@ -482,17 +482,22 @@ var cmds = {
 				tour[room.id].playerslogged.push(user.userid);
 				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');		
 			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == 3) || (tour[room.id].size - tour[room.id].players.length - 1 < Math.sqrt(tour[room.id].size) ) ) {
+				
 				var prelistnames = tour[room.id].players[tour[room.id].playerslogged.length];
-				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 				for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
 					prelistnames = prelistnames + ', ' + tour[room.id].players[i];
-					tour[room.id].playerslogged.push(tour[room.id].players[i]);
 				}
 				var listnames = prelistnames + ' and ' + tour[room.id].players[tour[room.id].players.length - 1];
-				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 				room.addRaw('<b>' + listnames + '</b> have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.</b></i>');
+				
+				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+				for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
+					tour[room.id].playerslogged.push(tour[room.id].players[i]);
+				}
+				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+				
 			} else {
-				this.sendReply('You have succesfully joined the tournament.' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + 'remaining.');
+				this.sendReply('You have succesfully joined the tournament.' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.');
 			}
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		} else {
