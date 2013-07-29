@@ -477,7 +477,7 @@ var cmds = {
 		if (tour[room.id] == undefined || tour[room.id].status == 0) return this.sendReply('There is no active tournament to join.');
 		if (tour[room.id].status == 2) return this.sendReply('Signups for the current tournament are over.');
 		if (tour.join(user.userid, room.id)) {
-			// these three assignments (integer, integer, boolean) are done as wished
+			// these three assignments (natural, natural, boolean) are done as wished
 			var pplogmarg = Math.ceil(Math.sqrt(tour[room.id].size) / 2);
 			var logperiod = Math.ceil(Math.sqrt(tour[room.id].size));
 			var perplayerlog = ( ( tour[room.id].players.length <= pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length <= pplogmarg ) );
@@ -488,7 +488,7 @@ var cmds = {
 				tour[room.id].playerslogged.push(user.userid);
 			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == logperiod) || (tour[room.id].size - tour[room.id].players.length - 1 <= pplogmarg ) ) {
 				if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
-					room.addRaw('<b>' + user.userid + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+					room.addRaw('<b>' + user.id + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 					tour[room.id].playerslogged.push(user.userid);
 				} else {
 					var prelistnames = '<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b>';
@@ -609,7 +609,7 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.leave(target, room.id)) {
-			if (tour[room.id].playerslogged.indexOf(target.userid) == -1) {
+			if (tour[room.id].playerslogged.indexOf(target) == -1) {
 				room.addRaw('<b>' + target + '</b> joined the tournament but was forced to leave by ' + user.name + '. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			else {
