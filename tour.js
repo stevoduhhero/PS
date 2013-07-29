@@ -534,10 +534,11 @@ var cmds = {
 			return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
 		}
 		if (tour.join(target, room.id)) {
-			if (tour[room.id].players.length == tour[room.id].playerslogged + 1) {
+			room.addRaw('1. PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
+			if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
 				room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				tour[room.id].playerslogged.push(target);
-			} else if (tour[room.id].players.length == tour[room.id].playerslogged + 2) {
+			} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 2) {
 				room.addRaw('<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length + 1) + ' slot' + (( tour[room.id].size - tour[room.id].players.length + 1) == 1 ? '' : 's') + ' remaining.</b></i>');
 				room.addRaw(user.name + ' has forced <b>' + target + '</b> to join the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
@@ -558,7 +559,7 @@ var cmds = {
 				}
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 			}
-			room.addRaw('PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
+			room.addRaw('2. PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		}
 		else {
