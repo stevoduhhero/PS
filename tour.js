@@ -999,7 +999,7 @@ Rooms.global.startBattle = function(p1, p2, format, rated, p1team, p2team) {
 	//console.log('BATTLE START BETWEEN: '+p1.userid+' '+p2.userid);
 	var i = this.lastBattle+1;
 	var formaturlid = format.toLowerCase().replace(/[^a-z0-9]+/g,'');
-	while(rooms['battle-'+formaturlid+i]) {
+	while(Rooms.rooms['battle-'+formaturlid+i]) {
 		i++;
 	}
 	this.lastBattle = i;
