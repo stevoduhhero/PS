@@ -997,12 +997,12 @@ Rooms.global.startBattle = function(p1, p2, format, rated, p1team, p2team) {
 	}
 
 	//console.log('BATTLE START BETWEEN: '+p1.userid+' '+p2.userid);
-	var i = this.numBattles+1;
+	var i = this.lastBattle+1;
 	var formaturlid = format.toLowerCase().replace(/[^a-z0-9]+/g,'');
-	while(Rooms.rooms['battle-'+formaturlid+i]) {
+	while(rooms['battle-'+formaturlid+i]) {
 		i++;
 	}
-	this.numBattles = i;
+	this.lastBattle = i;
 	newRoom = this.addRoom('battle-'+formaturlid+'-'+i, format, p1, p2, this.id, rated);
 	p1.joinRoom(newRoom);
 	p2.joinRoom(newRoom);
