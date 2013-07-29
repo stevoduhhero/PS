@@ -621,7 +621,7 @@ var cmds = {
 		}
 		if (tour.leave(target, room.id)) {
 			if (tour[room.id].playerslogged.indexOf(target) == -1) {
-				room.addRaw('<b>' + target + '</b> joined the tournament but was forced to leave by ' + user.name + '. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+				room.addRaw('<b>' + target + '</b> joined the tournament but was forced to leave by ' + user.name + '. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			else {
 				tour[room.id].playerslogged.splice(tour[room.id].playerslogged.indexOf(target), 1);
