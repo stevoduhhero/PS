@@ -624,7 +624,7 @@ var cmds = {
 				room.addRaw('<b>' + target + '</b> joined the tournament but was forced to leave by ' + user.name + '. ' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			else {
-				tour[room.id].playerslogged.splice(tour[room.id].playerslogged.indexOf(user.userid), 1);
+				tour[room.id].playerslogged.splice(tour[room.id].playerslogged.indexOf(target), 1);
 				room.addRaw(user.name + ' has forced <b>' + target + '</b> to leave the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			room.addRaw('PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
