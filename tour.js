@@ -883,7 +883,7 @@ var cmds = {
 						if (c.round[x] === undefined) continue;
 						if ((room.p1.userid == c.round[x][0] && room.p2.userid == c.round[x][1]) || (room.p2.userid == c.round[x][0] && room.p1.userid == c.round[x][1])) {
 							if (c.round[x][2] == -1) {
-										if ( room.triedinvalid && this.can('ban') ) {
+										if ( room.triedinvalid && user.can('ban') ) {
 											c.round[x][2] = undefined;
 											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
 											var success = true;
@@ -914,7 +914,7 @@ var cmds = {
 
 			if (!success) {
 				room.triedinvalid = true;
-				if (this.can('ban')) {
+				if (user.can('ban')) {
 					return this.sendReply('Are you sure you want to invalidate this battle? If so, repeat the command.');
 				} else {
 					return this.sendReply('This battle is not weird enough for you to use this command. Bring a mod here to use it instead.');
