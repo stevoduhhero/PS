@@ -39,7 +39,7 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
-	gymfire: {
+	/*gymfire: {
 		name: "Gym Fire",
 		section: "Singles",
 
@@ -50,7 +50,7 @@ exports.BattleFormats = {
 		isTeambuilderFormat: true,
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview', 'Double Resistance Clause'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
-	},
+	},*
 	/**
 	oucurrent: {
 		name: "OU (current)",
@@ -1141,7 +1141,7 @@ exports.BattleFormats = {
 			}
 		}
 	},
-	doubleresistanceclause: {
+	/*doubleresistanceclause: {
 		effectType: 'Rule',
                 onStart: function() {
 			this.add('rule', 'Gym Resistance Clause: Pokemon having double resistance or immunity against the gym type are not allowed.');
@@ -1153,7 +1153,7 @@ exports.BattleFormats = {
 			if (!notImmune) return [set.species+" is banned because it is immune against this gym type."];
                         if (Tools.getEffectiveness(type, template) == -2) return [set.species+" is banned because it has double resistance against this gym type."];
                 }
-        },
+        },*/
 	sametypeclause: {
 		effectType: 'Rule',
 		onStart: function() {
