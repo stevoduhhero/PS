@@ -80,11 +80,11 @@ exports.tour = function(t) {
 			}
 			return cmdArr;
 		},
-		username: function(id) {
+		username: function(uid) {
 			if (Users.get(id)) {
-				return Users.get(id).name;
+				return Users.get(uid).name;
 			} else {
-				return id;
+				return uid;
 			}
 		},
 		join: function(uid, rid) {
