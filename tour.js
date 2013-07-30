@@ -944,6 +944,7 @@ var cmds = {
 		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
 		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status == 1) {
+			var remslots = tour[room.id].size - tour[room.id].players.length;
 			if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
 				return this.sendReply('There is nothing to report.');
 			} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
