@@ -493,14 +493,17 @@ var cmds = {
 				tour[room.id].playerslogged.push(user.userid);
 			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == logperiod) || (tour[room.id].size - tour[room.id].players.length <= pplogmarg ) ) {
 				if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
-					room.addRaw('<b>' + user.userid + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+					room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 					tour[room.id].playerslogged.push(user.userid);
 				} else {
-					var prelistnames = '<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b>';
+					var someid = tour[room.id].players[tour[room.id].playerslogged.length];
+					var prelistnames = '<b>' + ( ( Users.get(someid) && Users.get(someid).name ) || someid ) + '</b>';
 					for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
-						prelistnames = prelistnames + ', <b>' + tour[room.id].players[i] + '</b>';
+						someid = tour[room.id].players[i];
+						prelistnames = prelistnames + ', <b>' + ( ( Users.get(someid) && Users.get(someid).name ) || someid ) + '</b>';
 					}
-					var listnames = prelistnames + ' and <b>' + tour[room.id].players[tour[room.id].players.length - 1] + '</b>';
+					someid = tour[room.id].players[tour[room.id].players.length - 1];
+					var listnames = prelistnames + ' and <b>' + ( ( Users.get(someid) && Users.get(someid).name ) || someid ) + '</b>';
 					room.addRaw(listnames + ' have joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				
 					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
