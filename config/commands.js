@@ -758,6 +758,58 @@ var commands = exports.commands = {
 			'- <a href="http://pokemonshowdown.com/replay/gennextou-37900768">QwietQwilfish vs pickdenis</a>');
 	},
 
+	pctier: 'pokecybertier',
+	othermetas: function(target, room, user) {
+		if (!this.canBroadcast()) return;
+		target = toId(target);
+		var buffer = '';
+		var matched = false;
+		if (!target || target === 'all') {
+			matched = true;
+			buffer += '- <a href="https://docs.google.com/document/d/1GDgeBP0am-jXtA-8HggBvveA40yW9a3PqRdw3Me-0wc/edit?usp=sharing">Information on the Poke Cyber Metagames</a><br />';
+		}
+		if (target === 'volcarona') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/637.gif">This pokemons Poke Cyber Tier is: OU suspect<br />';
+		}
+		if (target === 'chandalure') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/609.gif">This pokemons Poke Cyber Tier is: Uber<br />';
+		}
+		if (target === 'thundurus') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/642.gif">This pokemons Poke Cyber Tier is: OU<br />';
+		}
+		if (target === 'tornadust') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/641-therian.gif">This pokemons Poke Cyber Tier is: OU<br />';
+		}
+		if (target === 'serperior') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/497.gif">This pokemons Poke Cyber Tier is: UU Suspect<br />';
+		}
+		if (target === 'houndoom') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/229.gif">This pokemons Poke Cyber Tier is: UU Suspect<br />';
+		}
+		if (target === 'sawsbuck') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/586.gif">This pokemons Poke Cyber Tier is: UU<br />';
+		}
+		if (target === 'ferroseed') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/597.gif">This pokemons Poke Cyber Tier is: UU<br />';
+		}
+		if (target === 'entei') {
+			matched = true;
+			buffer += '- <img src="http://sprites.pokecheck.org/i/244.gif">This pokemons Poke Cyber Tier is: UU<br />';
+		}		
+		if (!matched) {
+			return this.sendReply('The Other Metas entry "'+target+'" was not found. Try /othermetas or /om for general help.');
+		}
+		this.sendReplyBox(buffer);
+	},
+
 	om: 'othermetas',
 	othermetas: function(target, room, user) {
 		if (!this.canBroadcast()) return;
@@ -805,7 +857,7 @@ var commands = exports.commands = {
 		}
 		this.sendReplyBox(buffer);
 	},
-
+	
 	roomhelp: function(target, room, user) {
 		if (room.id === 'lobby') return this.sendReply('This command is too spammy for lobby.');
 		if (!this.canBroadcast()) return;
