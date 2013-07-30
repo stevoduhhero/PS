@@ -485,15 +485,15 @@ var cmds = {
 			// these three assignments (natural, natural, boolean) are done as wished
 			var pplogmarg = Math.ceil(Math.sqrt(tour[room.id].size) / 2);
 			var logperiod = Math.ceil(Math.sqrt(tour[room.id].size));
-			var perplayerlog = ( ( tour[room.id].players.length <= pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length <= pplogmarg ) );
+			var perplayerlog = ( ( tour[room.id].players.length <= pplogmarg ) || ( tour[room.id].size - tour[room.id].players.length + 1 <= pplogmarg ) );
 			//
 			
 			if (perplayerlog) {
 				room.addRaw('<b>' + user.name + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 				tour[room.id].playerslogged.push(user.userid);
-			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == logperiod) || (tour[room.id].size - tour[room.id].players.length - 1 <= pplogmarg ) ) {
+			} else if ( (tour[room.id].players.length - tour[room.id].playerslogged.length == logperiod) || (tour[room.id].size - tour[room.id].players.length <= pplogmarg ) ) {
 				if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
-					room.addRaw('<b>' + user.id + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
+					room.addRaw('<b>' + user.userid + '</b> has joined the tournament. <b><i>' + (tour[room.id].size - tour[room.id].players.length) + ' slot' + (( tour[room.id].size - tour[room.id].players.length ) == 1 ? '' : 's') + ' remaining.</b></i>');
 					tour[room.id].playerslogged.push(user.userid);
 				} else {
 					var prelistnames = '<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b>';
