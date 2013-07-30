@@ -880,47 +880,6 @@ var commands = exports.commands = {
 		this.sendReplyBox(buffer);
 	},
 
-	banlists: 'tiers',
-	tiers: function(target, room, user) {
-		if (!this.canBroadcast()) return;
-		target = toId(target);
-		var buffer = '';
-		var matched = false;
-		if (!target || target === 'all') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/tiers/">Smogon Tiers</a><br />';
-			buffer += '- <a href="http://www.smogon.com/bw/banlist/">The banlists for each tier</a><br />';
-		}
-		if (target === 'all' || target === 'ubers' || target === 'uber') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/uber">Uber Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'overused' || target === 'ou') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/ou">Overused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'underused' || target === 'uu') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/uu">Underused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'rarelyused' || target === 'ru') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/ru">Rarelyused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'neverused' || target === 'nu') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/nu">Neverused Pokemon</a><br />';
-		}
-		if (target === 'all' || target === 'littlecup' || target === 'lc') {
-			matched = true;
-			buffer += '- <a href="http://www.smogon.com/bw/tiers/lc">Little Cup Pokemon</a><br />';
-		}
-		if (!matched) {
-			return this.sendReply('The Tiers entry "'+target+'" was not found. Try /tiers for general help.');
-		}
-		this.sendReplyBox(buffer);
-	},
-
 	analysis: 'smogdex',
 	strategy: 'smogdex',
 	smogdex: function(target, room, user) {
