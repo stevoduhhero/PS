@@ -968,10 +968,8 @@ var cmds = {
 				}
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 			}
-		} else if (tour[room.id].status == 2) {
-			return this.parse('!vr');
 		} else {
-			return this.sendReply('Unhandled case for this command.');
+			return this.parse('!vr');
 		}
 	},
 
