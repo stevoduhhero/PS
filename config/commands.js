@@ -759,7 +759,7 @@ var commands = exports.commands = {
 	},
 
 	pctier: 'pokecybertier',
-	othermetas: function(target, room, user) {
+	pokecybertier: function(target, room, user) {
 		if (!this.canBroadcast()) return;
 		target = toId(target);
 		var buffer = '';
