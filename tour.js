@@ -276,7 +276,7 @@ exports.tour = function(t) {
 					Rooms.rooms[rid].addRaw('<div class="infobox"><h2>Results to "' + obj.question + '"</h2><hr />' + html + '</div>');
 				}
 				*/
-				
+			}	
 			else {
 				var html = '<hr /><h3><font color="green">Round '+ tour[rid].roundNum +'!</font></h3><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[tour[rid].tier].name + "<hr /><center>";
 				var pBye = new Array();
