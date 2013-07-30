@@ -39,8 +39,8 @@ exports.BattleFormats = {
 		ruleset: ['Pokemon', 'Standard', 'Evasion Abilities Clause', 'Team Preview'],
 		banlist: ['Uber', 'Drizzle ++ Swift Swim', 'Soul Dew']
 	},
-	ouelectric: {
-		name: "OU Electric",
+	gymfire: {
+		name: "Gym Fire",
 		section: "Singles",
 
 		effectType: 'Format',
@@ -1147,7 +1147,7 @@ exports.BattleFormats = {
 			this.add('rule', 'Gym Resistance Clause: Pokemon having double resistance or immunity against the gym type are not allowed.');
 		},
                 validateSet: function(set) {
-                	var type = "Electric" //insert type as wished
+                	var type = "Fire" //insert type as wished
                         var template = this.getTemplate(set.species);
 			var notImmune = Tools.getImmunity(type, template);
 			if (!notImmune) return [set.species+" is banned because it is immune against this gym type."];
