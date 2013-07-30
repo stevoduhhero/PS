@@ -81,7 +81,7 @@ exports.tour = function(t) {
 			return cmdArr;
 		},
 		username: function(uid) {
-			if (Users.get(id)) {
+			if (Users.get(uid)) {
 				return Users.get(uid).name;
 			} else {
 				return uid;
