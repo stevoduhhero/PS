@@ -42,7 +42,7 @@ exports.crashguard = true;
 
 // crashguardemail - if the server has been running for more than an hour
 // and crashes, send an email using these settings, rather than locking down
-// the server. Uncomment this definition if you wan to use this feature;
+// the server. Uncomment this definition if you want to use this feature;
 // otherwise, all crashes will lock down the server.
 /**exports.crashguardemail = {
 	transport: 'SMTP',
@@ -72,6 +72,11 @@ exports.reportjoins = true;
 //   This feature can lag larger servers - turn this off if your server is
 //   getting more than 160 or so users.
 exports.reportbattles = true;
+
+
+// if the tour.js script is enabled, this property enables /replace to be used
+// after the first round has finished.
+exports.tourunlimitreplace = true;
 
 // moderated chat - prevent unregistered, unvoiced users from speaking
 //   This should only be enabled temporarily, when you're dealing with
