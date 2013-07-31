@@ -87,6 +87,11 @@ exports.tour = function(t) {
 				return uid;
 			}
 		},
+		userauth: function(user, room) {
+			if (user.can('broadcast')) return true;
+			if (room.auth && room.auth[user.userid]) return true;
+			return false;
+		},
 		join: function(uid, rid) {
 			var players = tour[rid].players;
 			var init = 0;
@@ -417,8 +422,7 @@ var cmds = {
 			tour = require('./tour.js').tour(tour);
 			return this.sendReply('Tournament scripts were updated.');
 		}
-		if (!user.can('broadcast') && !room.auth) return this.parse('/tours');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.parse('/tours');
+		if (!tour.userauth(user,room)) return this.parse('/tours');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		var rid = room.id;
 		if (tour[rid].status != 0) return this.sendReply('There is already a tournament running, or there is one in a signup phase.');
@@ -462,8 +466,7 @@ var cmds = {
 	},
 
 	endtour: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined || tour[room.id].status == 0) return this.sendReply('There is no active tournament.');
 		tour[room.id].status = 0;
@@ -472,8 +475,7 @@ var cmds = {
 	},
 
 	toursize: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status > 1) return this.sendReply('The tournament size cannot be changed now!');
@@ -489,8 +491,7 @@ var cmds = {
 	},
 
 	tourtime: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status > 1) return this.sendReply('The tournament size cannot be changed now!');
@@ -556,8 +557,7 @@ var cmds = {
 
 	forcejoin: 'fj',
 	fj: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined || tour[room.id].status == 0 || tour[room.id].status == 2) return this.sendReply('There is no tournament in a sign-up phase.');
 		if (!target) return this.sendReply('Please specify a user who you\'d like to participate.');
@@ -649,8 +649,7 @@ var cmds = {
 
 	forceleave: 'fl',
 	fl: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined || tour[room.id].status == 0 || tour[room.id].status == 2) return this.sendReply('There is no tournament in a sign-up phase.  Use /dq username if you wish to remove someone in an active tournament.');
 		if (!target) return this.sendReply('Please specify a user to kick from this signup.');
@@ -678,8 +677,7 @@ var cmds = {
 	},
 
 	remind: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status != 1) return this.sendReply('There is no tournament in its sign up phase.');
@@ -752,8 +750,7 @@ var cmds = {
 
 	disqualify: 'dq',
 	dq: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (!target) return this.sendReply('Proper syntax for this command is: /dq username');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
@@ -786,8 +783,7 @@ var cmds = {
 	},
 
 	replace: function(target, room, user, connection) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined || tour[room.id].status != 2) return this.sendReply('The tournament is currently in a sign-up phase or is not active, and replacing users only works mid-tournament.');
 		if (tour[room.id].roundNum > 1 && !config.tourunlimitreplace) return this.sendReply('Due to the current settings, replacing users is only allowed in the first round of a tournament. If you do not like it, please contact an administrator.');
@@ -953,8 +949,7 @@ var cmds = {
 				return this.parse('/tours');
 			}
 		} else if (tour[room.id].status == 1) {
-			if (!user.can('broadcast') && !room.auth) return this.sendReply('You should not use this command during the sign-up phase.');
-			if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You should not use this command during the sign-up phase.');
+			if (!tour.userauth(user,room)) return this.sendReply('You should not use this command during the sign-up phase.');
 			var remslots = tour[room.id].size - tour[room.id].players.length;
 			if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
 				if (!this.broadcasting) return this.sendReply('There is nothing to report.');
@@ -995,7 +990,7 @@ var cmds = {
 	
 	survey: 'poll',
 	poll: function(target, room, user) {
-		if (!user.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (tour[room.id].question) return this.sendReply('There is currently a poll going on already.');
 		var separacion = "&nbsp;&nbsp;";
 		var answers = tour.splint(target);
@@ -1024,7 +1019,7 @@ var cmds = {
 	endsurvey: 'endpoll',
 	ep: 'endpoll',
 	endpoll: function(target, room, user) {
-		if (!user.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
+		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (!tour[room.id].question) return this.sendReply('There is no poll to end in this room.');
 		var votes = Object.keys(tour[room.id].answers).length;
 		if (votes == 0) room.addRaw("<h3>The poll was canceled because of lack of voters.</h3>");
