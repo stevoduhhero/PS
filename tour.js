@@ -686,8 +686,8 @@ var cmds = {
 		room.addRaw('<hr /><h2><font color="green">Please sign up for the ' + Tools.data.Formats[tour[room.id].tier].name + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + tour[room.id].size + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + '<hr />');
 	},
 
-	viewround: 'vr',
-	vr: function(target, room, user, connection) {
+	
+	viewround: function(target, room, user, connection) {
 		if (!this.canBroadcast()) return;
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
@@ -748,6 +748,7 @@ var cmds = {
 		}
 		this.sendReply("|raw|" + html + "</table>");
 	},
+	
 
 	disqualify: 'dq',
 	dq: function(target, room, user, connection) {
@@ -943,13 +944,20 @@ var cmds = {
 		return this.sendReplyBox(msg.toString());
 	},
 
-	tourreport: function(target, room, user) {
-		if (!user.can('broadcast') && !room.auth) return this.sendReply('You do not have enough authority to use this command.');
-		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
-		if (tour[room.id].status == 1) {
+	viewreport: 'vr'
+	vr: function(target, room, user) {
+		if (!tour[room.id].status) {
+			if (this.broadcasting) {
+				return this.parse('!tours');
+			} else {
+				return this.parse('/tours');
+			}
+		} else if (tour[room.id].status == 1) {
+			if (!user.can('broadcast') && !room.auth) return this.sendReply('You should not use this command during the sign-up phase.');
+			if (!user.can('broadcast') && !room.auth[user.userid]) return this.sendReply('You should not use this command during the sign-up phase.');
 			var remslots = tour[room.id].size - tour[room.id].players.length;
 			if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
-				return this.sendReply('There is nothing to report.');
+				if (!this.broadcasting) return this.sendReply('There is nothing to report.');
 			} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
 				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
 				room.addRaw('<b>' + tour.username(someid) + '</b> has joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
@@ -972,7 +980,11 @@ var cmds = {
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 			}
 		} else {
-			return this.parse('!vr');
+			if (this.broadcasting) {
+				return this.parse('!viewround');
+			} else {
+				return this.parse('/viewround');
+			}
 		}
 	},
 
