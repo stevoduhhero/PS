@@ -847,7 +847,7 @@ var cmds = {
 		for (var i in tour) {
 			var c = tour[i];
 			if (typeof c == "object") {
-				if (c.status == 1) html += '<button name="joinRoom" value="' + i + '">' + Rooms.rooms[i].title + ' - ' + c.tier + '</button> ';
+				if (c.status == 1) html += '<button name="joinRoom" value="' + i + '">' + Rooms.rooms[i].title + ' - ' + Tools.data.Formats[c.tier].name + '</button> ';
 			}
 		}
 		if (html == oghtml) html += "There are currently no tournaments in their signup phase.";
