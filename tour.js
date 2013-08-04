@@ -287,10 +287,8 @@ exports.tour = function(t) {
 					var p1 = i * 2;
 					var p2 = p1 + 1;
 					tour[rid].round.push([p[p1], p[p2], undefined]);
-					var p1n = p[p1];
-					var p2n = p[p2];
-					if (Users.get(p1n)) p1n = Users.get(p1n).name;
-					if (Users.get(p2n)) p2n = Users.get(p2n).name;
+					var p1n = tour.username(p[p1]);
+					var p2n = tour.username(p[p2]);
 					if (p1n.split('Guest ').length - 1 > 0) p1n = p[p1];
 					if (p2n.split('Guest ').length - 1 > 0) p2n = p[p2];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
@@ -707,17 +705,14 @@ var cmds = {
 		for (var i in r) {
 			if (!r[i][1]) {
 				//bye
-				var byer = r[i][0];
-				if (Users.get(r[i][0])) byer = Users.get(r[i][0]).name;
+				var byer = tour.username(r[i][0]);
 				html += "<font color=\"red\">" + clean(byer) + " has received a bye.</font><br />";
 			}
 			else {
 				if (r[i][2] == undefined) {
 					//haven't started
-					var p1n = r[i][0];
-					var p2n = r[i][1];
-					if (Users.get(p1n)) p1n = Users.get(p1n).name;
-					if (Users.get(p2n)) p2n = Users.get(p2n).name;
+					var p1n = tour.username(r[i][0]);
+					var p2n = tour.username(r[i][1]);
 					if (p1n.split('Guest ').length - 1 > 0) p1n = r[i][0];
 					if (p2n.split('Guest ').length - 1 > 0) p2n = r[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
@@ -725,10 +720,8 @@ var cmds = {
 				}
 				else if (r[i][2] == -1) {
 					//currently battling
-					var p1n = r[i][0];
-					var p2n = r[i][1];
-					if (Users.get(p1n)) p1n = Users.get(p1n).name;
-					if (Users.get(p2n)) p2n = Users.get(p2n).name;
+					var p1n = tour.username(r[i][0]);
+					var p2n = tour.username(r[i][1]);
 					if (p1n.split('Guest ').length - 1 > 0) p1n = r[i][0];
 					if (p2n.split('Guest ').length - 1 > 0) p2n = r[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
@@ -744,10 +737,8 @@ var cmds = {
 						p1 = "green";
 						p2 = "red";
 					}
-					var p1n = r[i][0];
-					var p2n = r[i][1];
-					if (Users.get(p1n)) p1n = Users.get(p1n).name;
-					if (Users.get(p2n)) p2n = Users.get(p2n).name;
+					var p1n = tour.username(r[i][0]);
+					var p2n = tour.username(r[i][1]);
 					if (p1n.split('Guest ').length - 1 > 0) p1n = r[i][0];
 					if (p2n.split('Guest ').length - 1 > 0) p2n = r[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
