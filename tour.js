@@ -13,7 +13,7 @@ exports.tour = function(t) {
 					var secondsNeeded = c.time * 60;
 					var secondsElapsed = tour.currentSeconds - c.startTime;
 					var difference = secondsNeeded - secondsElapsed;
-					var percent = secondsElapsed / secondsNeeded * 100;
+					var fraction = secondsElapsed / secondsNeeded;
 					function sendIt(end) {
 						if (end) {
 							Rooms.rooms[i].addRaw("<h3>The tournament was canceled because of lack of players.</h3>");
@@ -21,8 +21,8 @@ exports.tour = function(t) {
 						}
 						Rooms.rooms[i].addRaw("<i>The tournament will begin in " + difference + " second" + (difference == 1 ? '' : 's') + ".</i>");
 					}
-					if (percent == 25 || percent == 50 || percent == 75) sendIt();
-					if (percent >= 100) {
+					if (fraction == 0.25 || fraction == 0.5 || fraction == 0.75) sendIt();
+					if (fraction >= 1) {
 						if (tour[i].players.length < 3) {
 							tour.reset(i);
 							sendIt(true);
@@ -65,9 +65,9 @@ exports.tour = function(t) {
 		  for (i = 1; i < list.length; i++) {
 			j = Math.floor(Math.random()*(1+i));  // choose j in [0..i]
 			if (j != i) {
-			  t = list[i];                        // swap list[i] and list[j]
-			  list[i] = list[j];
-			  list[j] = t;
+				t = list[i];                        // swap list[i] and list[j]
+				list[i] = list[j];
+				list[j] = t;
 			}
 		  }
 		  return list;
@@ -75,9 +75,7 @@ exports.tour = function(t) {
 		splint: function(target) {
 			//splittyDiddles
 			var cmdArr =  target.split(",");
-			for(var i = 0; i < cmdArr.length; i++) {
-				cmdArr[i] = cmdArr[i].trim();
-			}
+			for (var i = 0; i < cmdArr.length; i++) cmdArr[i] = cmdArr[i].trim();
 			return cmdArr;
 		},
 		username: function(uid) {
@@ -168,26 +166,20 @@ exports.tour = function(t) {
 			var numByes = 0;
 			if (tour[rid].size <= 4) {
 					if (tour[rid].size % 2 == 0) {
-							isValid = true;
+						isValid = true;
 					} else {
-							isValid = true;
-							numByes = 1;
+						isValid = true;
+						numByes = 1;
 				}
 			}
-				do
-				{
-					var numPlayers = ((tour[rid].size - numByes) / 2 + numByes);
-					do
-					{
-							numPlayers = numPlayers / 2;
-					}
-				while (numPlayers > 1);
-				if (numPlayers == 1) {
-								isValid = true;
-					} else {
-								numByes += 1;
-					}
+			do {
+				var numPlayers = ((tour[rid].size - numByes) / 2 + numByes);
+				do {
+					numPlayers = numPlayers / 2;
 				}
+				while (numPlayers > 1);
+				if (numPlayers == 1) isValid = true; else numByes += 1;
+			}
 			while (isValid == false);
 			var r = tour[rid].round;
 			var sList = tour[rid].players;
