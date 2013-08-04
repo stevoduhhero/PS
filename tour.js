@@ -395,7 +395,7 @@ var cmds = {
 		var tierMatch = false;
 		var tempTourTier = '';
 		for (var i = 0; i < tour.tiers.length; i++) {
-			if ((targets[0].trim().toLowerCase()) == tour.tiers[i].trim().toLowerCase()) {
+			if (toId(targets[0]) == tour.tiers[i]) {
 				tierMatch = true;
 				tempTourTier = tour.tiers[i];
 			}
@@ -534,12 +534,12 @@ var cmds = {
 			
 			var remslots = tour[room.id].size - tour[room.id].players.length;
 			if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
-				room.addRaw(user.name + ' has forced <b>' + Users.get(target).name + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				room.addRaw(user.name + ' has forced <b>' + tour.username(target) + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 				tour[room.id].playerslogged.push(target);
 			} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 2) {
 				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
 				room.addRaw('<b>' + tour.username(someid) + '</b> has joined the tournament. <b><i>' + (remslots + 1) + ' slot' + ( remslots === 0 ? '' : 's') + ' remaining.</b></i>');
-				room.addRaw(user.name + ' has forced <b>' + Users.get(target).name + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				room.addRaw(user.name + ' has forced <b>' + tour.username(target) + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 				tour[room.id].playerslogged.push(target);
 			} else {
@@ -553,7 +553,7 @@ var cmds = {
 				var listnames = prelistnames + ' and <b>' + tour.username(someid) + '</b>';
 				
 				room.addRaw(listnames + ' have joined the tournament. <b><i>' + (remslots + 1) + ' slot' + ( remslots === 0 ? '' : 's') + ' remaining.</b></i>');
-				room.addRaw(user.name + ' has forced <b>' + Users.get(target).name + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				room.addRaw(user.name + ' has forced <b>' + tour.username(target) + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 				
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 				for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) {
@@ -580,7 +580,10 @@ var cmds = {
 				if (tour[room.id].playerslogged.indexOf(user.userid) == -1) {
 					return this.sendReply('You have left the tournament. ' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.');
 				} else {
-					if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
+					if (tour[room.id].players.length + 1 == tour[room.id].playerslogged.length) {
+					} else if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
+						tour[room.id].playerslogged.push(user.userid);
+					} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
 						room.addRaw('<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b> has joined the tournament. <b><i>' + ( remslots - 1 ) + ' slot' + ( remslots == 2 ? '' : 's') + ' remaining.</b></i>');
 						tour[room.id].playerslogged.push(user.userid);
 					} else {
@@ -642,12 +645,16 @@ var cmds = {
 		if (tour.leave(target, room.id)) {
 			var remslots = tour[room.id].size - tour[room.id].players.length;
 			if (tour[room.id].playerslogged.indexOf(target) == -1) {
-				room.addRaw('<b>' + Users.get(target).name + '</b> joined the tournament but was forced to leave by ' + user.name + '. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				room.addRaw('<b>' + tour.username(target) + '</b> joined the tournament but was forced to leave by ' + user.name + '. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			else {
-				if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
+				if (tour[room.id].players.length + 1 == tour[room.id].playerslogged.length) {
+				} else if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
+					room.addRaw('<b>' + tour.username(target) + '</b> has joined the tournament. <b><i>' + ( remslots - 1) + ' slot' + ( remslots == 2 ? '' : 's') + ' remaining.</b></i>');
+					tour[room.id].playerslogged.push(target);
+				} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
 					room.addRaw('<b>' + tour[room.id].players[tour[room.id].playerslogged.length] + '</b> has joined the tournament. <b><i>' + ( remslots - 1 ) + ' slot' + ( remslots == 2 ? '' : 's') + ' remaining.</b></i>');
-					tour[room.id].playerslogged.push(user.userid);
+					tour[room.id].playerslogged.push(target);
 				} else {
 					var someid = tour[room.id].players[tour[room.id].playerslogged.length];
 					var prelistnames = '<b>' + tour.username(someid) + '</b>';
@@ -666,7 +673,7 @@ var cmds = {
 					tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 				}
 				tour[room.id].playerslogged.splice(tour[room.id].playerslogged.indexOf(target), 1);
-				room.addRaw(user.name + ' has forced <b>' + Users.get(target).name + '</b> to leave the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				room.addRaw(user.name + ' has forced <b>' + tour.username(target) + '</b> to leave the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 		}
 		else {
