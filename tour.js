@@ -226,16 +226,13 @@ exports.tour = function(t) {
 			var firstMatch = false;
 			for (var i in round) {
 				if (!round[i][1]) {
-						var p1n = round[i][0];
-						if (Users.get(p1n)) p1n = Users.get(p1n).name;
+						var p1n = tour.username(round[i][0]);
 						if (p1n.split('Guest ').length - 1 > 0) p1n = round[i][0];
 						html += "<font color=\"red\">" + clean(p1n) + " has received a bye!</font><br />";
 				}
 				else {
-					var p1n = round[i][0];
-					var p2n = round[i][1];
-					if (Users.get(p1n)) p1n = Users.get(p1n).name;
-					if (Users.get(p2n)) p2n = Users.get(p2n).name;
+					var p1n = tour.username(round[i][0]);
+					var p2n = tour.username(round[i][1]);
 					if (p1n.split('Guest ').length - 1 > 0) p1n = round[i][0];
 					if (p2n.split('Guest ').length - 1 > 0) p2n = round[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
