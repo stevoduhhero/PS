@@ -940,7 +940,7 @@ var cmds = {
 		return this.sendReplyBox(msg.toString());
 	},
 
-	viewreport: 'vr'
+	viewreport: 'vr',
 	vr: function(target, room, user) {
 		if (!tour[room.id].status) {
 			if (this.broadcasting) {
