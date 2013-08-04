@@ -548,7 +548,6 @@ var cmds = {
 			} else {
 				this.sendReply('You have succesfully joined the tournament. ' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.');
 			}
-			//room.addRaw('PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		} else {
 			return this.sendReply('You could not enter the tournament. You may already be in the tournament. Type /l if you want to leave the tournament.');
@@ -570,7 +569,6 @@ var cmds = {
 		}
 		if (tour.join(target, room.id)) {
 			
-			//room.addRaw('1. PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
 			var remslots = tour[room.id].size - tour[room.id].players.length;
 			if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
 				room.addRaw(user.name + ' has forced <b>' + Users.get(target).name + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
@@ -600,7 +598,6 @@ var cmds = {
 				}
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 			}
-			//room.addRaw('2. PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
 			if (tour[room.id].size == tour[room.id].players.length) tour.start(room.id);
 		}
 		else {
@@ -621,9 +618,9 @@ var cmds = {
 					return this.sendReply('You have left the tournament. ' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.');
 				} else {
 					tour[room.id].playerslogged.splice(tour[room.id].playerslogged.indexOf(user.userid), 1);
+					//now it's time to report due joins. TO DO
 					room.addRaw('<b>' + user.name + '</b> has left the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 				}
-				//room.addRaw('PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
 			}
 			else {
 				return this.sendReply("You're not in the tournament.");
@@ -667,6 +664,7 @@ var cmds = {
 			}
 			else {
 				tour[room.id].playerslogged.splice(tour[room.id].playerslogged.indexOf(target), 1);
+				//now it's time to report due joins. TO DO
 				room.addRaw(user.name + ' has forced <b>' + Users.get(target).name + '</b> to leave the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
 			}
 			//room.addRaw('PLAYERS: ' + tour[room.id].players.toString() + '; LOGGEDPLAYERS: ' + tour[room.id].playerslogged.toString());
@@ -920,24 +918,26 @@ var cmds = {
 		}
 	},
 
-	tourbatended: function(target, room, user) {
-		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
-		if (tour[room.id].battlesended.length == 0) return this.sendReply('No finished tournament battle is registered.');
-		var msg = new Array();
-		for (var i=0; i<tour[room.id].battlesended.length; i++) {
-			msg[i] = "<a href='/" + tour[room.id].battlesended[i] + "' class='ilink'>" + tour[room.id].battlesended[i].match(/\d+$/) + "</a>";
+	tourbats: function(target, room, user) {
+		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');	
+		if (target == 'all') {
+			if (tour[room.id].battlesended.length == 0) return this.sendReply('No finished tournament battle is registered.');
+			var msg = new Array();
+			for (var i=0; i<tour[room.id].battlesended.length; i++) {
+				msg[i] = "<a href='/" + tour[room.id].battlesended[i] + "' class='ilink'>" + tour[room.id].battlesended[i].match(/\d+$/) + "</a>";
+			}
+			return this.sendReplyBox(msg.toString());			
+		} else if (target == 'invtie') {
+			if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
+			if (tour[room.id].battlesinvtie.length == 0) return this.sendReply('No battle in this tournament has ended in a tie or been invalidated.');
+			var msg = new Array();
+			for (var i=0; i<tour[room.id].battlesinvtie.length; i++) {
+				msg[i] = "<a href='/" + tour[room.id].battlesinvtie[i] + "' class='ilink'>" + tour[room.id].battlesinvtie[i].match(/\d+$/) + "</a>";
+			}
+			return this.sendReplyBox(msg.toString());
+		} else {
+			return this.sendReply('Use either "/tourbats all" or "/tourbats invtie"');
 		}
-		return this.sendReplyBox(msg.toString());
-	},
-
-	tourbatinvtie: function(target, room, user) {
-		if (!tour[room.id].status) return this.sendReply('There is no active tournament in this room.');
-		if (tour[room.id].battlesinvtie.length == 0) return this.sendReply('No battle in this tournament has ended in a tie or been invalidated.');
-		var msg = new Array();
-		for (var i=0; i<tour[room.id].battlesinvtie.length; i++) {
-			msg[i] = "<a href='/" + tour[room.id].battlesinvtie[i] + "' class='ilink'>" + tour[room.id].battlesinvtie[i].match(/\d+$/) + "</a>";
-		}
-		return this.sendReplyBox(msg.toString());
 	},
 
 	viewreport: 'vr',
