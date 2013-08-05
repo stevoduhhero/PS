@@ -705,7 +705,7 @@ var cmds = {
 			for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
 				tour[room.id].playerslogged.push(tour[room.id].players^);
 			}
-		tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 		}		
 		room.addRaw('<hr /><h2><font color="green">Please sign up for the ' + Tools.data.Formats[tour[room.id].tier].name + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + tour[room.id].size + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + '<hr />');
 	},
