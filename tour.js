@@ -93,11 +93,51 @@ exports.tour = function(t) {
 		},
 		join: function(uid, rid) {
 			var players = tour[rid].players;
-			var init = 0;
-			for (var i in players) {
-				if (players[i] == uid) {
-					init = 1;
-					break;
+			var init = false;
+			var somelog = "";
+			checkaltslabel:
+			{
+				if (config.tourallowalts){
+					for (var i=0; i<players.length; i++) {
+						if (players[i] == uid) {
+							init = true;
+							break checkaltslabel;
+						}
+					}
+				} else {
+					for (var i=0; i<players.length; i++) {
+						if (players[i] == uid) {
+							init = true;
+							break checkaltslabel;
+						}
+					}
+					for (var i=0; i<players.length; i++) {
+						for (var j=0; j<Users.get(uid).getAlts().length; j++) {
+							if (players[i] == toId(Users.get(uid).getAlts()[j])) {
+								init = true;
+								break checkaltslabel;
+							}
+						}
+					}
+					for (var i=0; i<players.length; i++) {
+						for (var j in Users.get(uid).prevNames) {
+							if (players[i] == toId(j)) {
+								init = true;
+								break checkaltslabel;
+							}
+						}
+					}
+					for (var i=0; i<players.length; i++) {	
+						for (var j=0; j<Users.get(uid).getAlts().length; j++) {
+							for (var k in Users.get(Users.get(uid).getAlts()[j]).prevNames) {
+								if (players[i] == toId(k)) {
+									init = true;
+									break checkaltslabel;
+								}
+							}
+						}
+					}
+
 				}
 			}
 			if (init) return false;
@@ -768,6 +808,49 @@ var cmds = {
 		this.sendReply("|raw|" + html + "</table>");
 	},
 
+	viewreport: 'vr',
+	vr: function(target, room, user) {
+		if (!tour[room.id].status) {
+			if (this.broadcasting) {
+				return this.parse('!tours');
+			} else {
+				return this.parse('/tours');
+			}
+		} else if (tour[room.id].status == 1) {
+			if (!tour.userauth(user,room)) return this.sendReply('You should not use this command during the sign-up phase.');
+			var remslots = tour[room.id].size - tour[room.id].players.length;
+			if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
+				if (!this.broadcasting) return this.sendReply('There is nothing to report.');
+			} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
+				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
+				room.addRaw('<b>' + tour.username(someid) + '</b> has joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+			} else {
+				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
+				var prelistnames = '<b>' + tour.username(someid) + '</b>';
+				for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
+					someid = tour[room.id].players[i];
+					prelistnames = prelistnames + ', <b>' + tour.username(someid) + '</b>';
+				}
+				someid = tour[room.id].players[tour[room.id].players.length - 1];
+				var listnames = prelistnames + ' and <b>' + tour.username(someid) + '</b>';
+				room.addRaw(listnames + ' have joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+				
+				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+				for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
+					tour[room.id].playerslogged.push(tour[room.id].players[i]);
+				}
+				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+			}
+		} else {
+			if (this.broadcasting) {
+				return this.parse('!viewround');
+			} else {
+				return this.parse('/viewround');
+			}
+		}
+	},
+
 	disqualify: 'dq',
 	dq: function(target, room, user, connection) {
 		if (!tour.userauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
@@ -982,47 +1065,14 @@ var cmds = {
 		}
 	},
 
-	viewreport: 'vr',
-	vr: function(target, room, user) {
-		if (!tour[room.id].status) {
-			if (this.broadcasting) {
-				return this.parse('!tours');
-			} else {
-				return this.parse('/tours');
-			}
-		} else if (tour[room.id].status == 1) {
-			if (!tour.userauth(user,room)) return this.sendReply('You should not use this command during the sign-up phase.');
-			var remslots = tour[room.id].size - tour[room.id].players.length;
-			if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
-				if (!this.broadcasting) return this.sendReply('There is nothing to report.');
-			} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
-				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
-				room.addRaw('<b>' + tour.username(someid) + '</b> has joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
-				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
-			} else {
-				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
-				var prelistnames = '<b>' + tour.username(someid) + '</b>';
-				for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
-					someid = tour[room.id].players[i];
-					prelistnames = prelistnames + ', <b>' + tour.username(someid) + '</b>';
-				}
-				someid = tour[room.id].players[tour[room.id].players.length - 1];
-				var listnames = prelistnames + ' and <b>' + tour.username(someid) + '</b>';
-				room.addRaw(listnames + ' have joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
-				
-				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
-				for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
-					tour[room.id].playerslogged.push(tour[room.id].players[i]);
-				}
-				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
-			}
-		} else {
-			if (this.broadcasting) {
-				return this.parse('!viewround');
-			} else {
-				return this.parse('/viewround');
-			}
-		}
+	toursettings: function(target, room, user) {
+		if (!user.can('forcewin') && user.userid !== 'slayer95' && user.userid !== 'chslayer95');
+		if (target === 'replace on') return config.tourunlimitreplace = true;
+		if (target === 'replace off') return config.tourunlimitreplace = false;
+		if (target === 'alts on') return config.tourallowalts = true;
+		if (target === 'alts off') return config.tourallowalts = false;
+		if (target.substr(0,4) === 'auth' && config.groupsranking.indexOf(target.substr(5,1))) return config.tourauth = target.substr(5,1);
+		return this.sendReply('Valid targets are: replace on/off, alts on/off, auth SYMBOL');
 	},
 
 	tourdoc: function() {
@@ -1170,7 +1220,6 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 	//tour
 	if (this.tournament) {
 		var winnerid = toId(winner);
-
 
 		var missingp1 = !this.battle.getPlayer(0);
 		var missingp2 = !this.battle.getPlayer(1);
