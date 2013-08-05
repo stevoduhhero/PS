@@ -688,9 +688,11 @@ var cmds = {
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status != 1) return this.sendReply('There is no tournament in its sign up phase.');
-		if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
-			room.addRaw('<b>' + tour.username(tour[room.id].players[tour[room.id].playerslogged.length]) + '</b> has joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
-			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+		if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
+		} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
+			var someid = tour[room.id].players[tour[room.id].playerslogged.length];
+			room.addRaw('<b>' + tour.username(someid) + '</b> has joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+			tour[room.id].playerslogged.push(someid);
 		} else {
 			var someid = tour[room.id].players[tour[room.id].playerslogged.length];
 			var prelistnames = '<b>' + tour.username(someid) + '</b>';
@@ -704,7 +706,7 @@ var cmds = {
 		
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
 			for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
-				tour[room.id].playerslogged.push(tour[room.id].players^);
+				tour[room.id].playerslogged.push(tour[room.id].players[i]);
 			}
 			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
 		}		
