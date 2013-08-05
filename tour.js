@@ -219,14 +219,14 @@ exports.tour = function(t) {
 			for (var i in round) {
 				if (!round[i][1]) {
 						var p1n = tour.username(round[i][0]);
-						if (p1n.split('Guest ').length - 1 > 0) p1n = round[i][0];
+						if (p1n.substr(0, 6) === 'Guest ') p1n = round[i][0];
 						html += "<font color=\"red\">" + clean(p1n) + " has received a bye!</font><br />";
 				}
 				else {
 					var p1n = tour.username(round[i][0]);
 					var p2n = tour.username(round[i][1]);
-					if (p1n.split('Guest ').length - 1 > 0) p1n = round[i][0];
-					if (p2n.split('Guest ').length - 1 > 0) p2n = round[i][1];
+					if (p1n.substr(0, 6) === 'Guest ') p1n = round[i][0];
+					if (p2n.substr(0, 6) === 'Guest ') p2n = round[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
 					html += tabla + "<tr><td align=right>" + clean(p1n) + "</td><td>&nbsp;VS&nbsp;</td><td>" + clean(p2n) + "</td></tr>";
 				}
@@ -278,8 +278,8 @@ exports.tour = function(t) {
 					tour[rid].round.push([p[p1], p[p2], undefined]);
 					var p1n = tour.username(p[p1]);
 					var p2n = tour.username(p[p2]);
-					if (p1n.split('Guest ').length - 1 > 0) p1n = p[p1];
-					if (p2n.split('Guest ').length - 1 > 0) p2n = p[p2];
+					if (p1n.substr(0, 6) === 'Guest ') p1n = p[p1];
+					if (p2n.substr(0, 6) === 'Guest ') p2n = p[p2];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
 					html += tabla + "<tr><td align=right>" + clean(p1n) + "</td><td>&nbsp;VS&nbsp;</td><td>" + clean(p2n) + "</td></tr>";
 				}
@@ -418,6 +418,7 @@ var cmds = {
 		if (isNaN(targets[1])) return this.sendReply('Proper syntax for this command: /tour tier, size');
 		if (targets[1] < 3) return this.sendReply('Tournaments must contain 3 or more people.');
 
+		this.parse('/endpoll');
 		tour.reset(rid);
 		tour[rid].tier = tempTourTier;
 		tour[rid].size = targets[1];
@@ -709,8 +710,8 @@ var cmds = {
 					//haven't started
 					var p1n = tour.username(r[i][0]);
 					var p2n = tour.username(r[i][1]);
-					if (p1n.split('Guest ').length - 1 > 0) p1n = r[i][0];
-					if (p2n.split('Guest ').length - 1 > 0) p2n = r[i][1];
+					if (p1n.substr(0, 6) === 'Guest ') p1n = r[i][0];
+					if (p2n.substr(0, 6) === 'Guest ') p2n = r[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
 					html += tabla + "<tr><td align=right>" + clean(p1n) + "</td><td>&nbsp;VS&nbsp;</td><td>" + clean(p2n) + "</td></tr>";
 				}
@@ -718,8 +719,8 @@ var cmds = {
 					//currently battling
 					var p1n = tour.username(r[i][0]);
 					var p2n = tour.username(r[i][1]);
-					if (p1n.split('Guest ').length - 1 > 0) p1n = r[i][0];
-					if (p2n.split('Guest ').length - 1 > 0) p2n = r[i][1];
+					if (p1n.substr(0, 6) === 'Guest ') p1n = r[i][0];
+					if (p2n.substr(0, 6) === 'Guest ') p2n = r[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
 					var tourbattle = tour[room.id].battles[i];
 					function link(txt) {return "<a href='/" + tourbattle + "' room='" + tourbattle + "' class='ilink'>" + txt + "</a>";}
@@ -735,8 +736,8 @@ var cmds = {
 					}
 					var p1n = tour.username(r[i][0]);
 					var p2n = tour.username(r[i][1]);
-					if (p1n.split('Guest ').length - 1 > 0) p1n = r[i][0];
-					if (p2n.split('Guest ').length - 1 > 0) p2n = r[i][1];
+					if (p1n.substr(0, 6) === 'Guest ') p1n = r[i][0];
+					if (p2n.substr(0, 6) === 'Guest ') p2n = r[i][1];
 					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
 					html += tabla + "<tr><td align=right><b><font color=\"" + p1 + "\">" + clean(p1n) + "</font></b></td><td><b>&nbsp;VS&nbsp;</b></td><td><font color=\"" + p2 + "\"><b>" + clean(p2n) + "</b></font></td></tr>";
 				}
