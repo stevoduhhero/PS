@@ -86,7 +86,8 @@ exports.tour = function(t) {
 			}
 		},
 		userauth: function(user, room) {
-			if (user.can('broadcast')) return true;
+			if (user.can('broadcast') && !config.tourdriver) return true;
+			if (user.can('mute')) return true;
 			if (room.auth && room.auth[user.userid]) return true;
 			return false;
 		},
