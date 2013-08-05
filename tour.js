@@ -728,6 +728,7 @@ var cmds = {
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status != 1) return this.sendReply('There is no tournament in its sign up phase.');
+		var remslots = tour[room.id].size - tour[room.id].players.length;
 		if (tour[room.id].players.length == tour[room.id].playerslogged.length) {
 		} else if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
 			var someid = tour[room.id].players[tour[room.id].playerslogged.length];
@@ -1071,14 +1072,16 @@ var cmds = {
 		if (target === 'replace off') return config.tourunlimitreplace = false;
 		if (target === 'alts on') return config.tourallowalts = true;
 		if (target === 'alts off') return config.tourallowalts = false;
-		if (target.substr(0,4) === 'auth' && config.groupsranking.indexOf(target.substr(5,1))) return config.tourauth = target.substr(5,1);
-		return this.sendReply('Valid targets are: replace on/off, alts on/off, auth SYMBOL');
+		if (target === 'invalidate on') return config.tourdisableinvalidate = true;
+		if (target === 'invalidate off') return config.tourdisableinvalidate = false;
+		if (target.substr(0,4) === 'auth' && config.groupsranking.indexOf(target.substr(5,1)) != -1) return config.tourauth = target.substr(5,1);
+		return this.sendReply('Valid targets are: replace on/off, alts on/off, invalidate on/off, auth SYMBOL');
 	},
 
-	tourdoc: function() {
+	/* tourdoc: function() {
 		if (!this.canBroadcast()) return;
 		this.sendReplyBox("Click <a href='http://elloworld.dyndns.org/documentation.html'>here</a> to be taken to the documentation for the tournament commands.");
-	},
+	}, */
 	
 	survey: 'poll',
 	poll: function(target, room, user) {
