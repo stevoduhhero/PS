@@ -542,7 +542,7 @@ var cmds = {
 				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
 				room.addRaw('<b>' + tour.username(someid) + '</b> has joined the tournament. <b><i>' + (remslots + 1) + ' slot' + ( remslots === 0 ? '' : 's') + ' remaining.</b></i>');
 				room.addRaw(user.name + ' has forced <b>' + tour.username(target) + '</b> to join the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
-				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+				tour[room.id].playerslogged.push(someid);
 				tour[room.id].playerslogged.push(target);
 			} else {
 				var someid = tour[room.id].players[tour[room.id].playerslogged.length];
@@ -875,66 +875,86 @@ var cmds = {
 	},
 
 	invalidate: function(target,room,user) {
-		if (!this.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
 		if (!room.decision) return this.sendReply('You can only do this in battle rooms.');
 		if (!room.tournament) return this.sendReply('This is not an official tournament battle.');
-
-		var missingp1 = !room.battle.getPlayer(0);
-		var missingp2 = !room.battle.getPlayer(1);
-		var rightplayers = ( (missingp1 || missingp2) ? false : ( room.p1.userid == room.battle.getPlayer(0).userid && room.p2.userid == room.battle.getPlayer(1).userid ) );
-
-		if (missingp1) {
-			var rightplayer = ( missingp2 ? false : ( room.p2.userid == room.battle.getPlayer(1).userid ) );
-		} else if (missingp2) {
-			var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid );
-		} else {
-			var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid || room.p2.userid == room.battle.getPlayer(1).userid );
-		}
-
 		tourinvalidlabel:
 		{
-			for (var i in tour) {
-				var c = tour[i];
-				if (c.status == 2) {
-					for (var x in c.round) {
-						if (c.round[x] === undefined) continue;
-						if ((room.p1.userid == c.round[x][0] && room.p2.userid == c.round[x][1]) || (room.p2.userid == c.round[x][0] && room.p1.userid == c.round[x][1])) {
-							if (c.round[x][2] == -1) {
-										if ( room.triedinvalid && user.can('ban') ) {
-											c.round[x][2] = undefined;
-											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
-											var success = true;
-											tour[i].battlesinvtie.push(room.id);
-											break tourinvalidlabel;
-										} else if (rightplayers) {
-											var success = false;
-										} else if (rightplayer & !(missingp1 || missingp2) ) {
-											c.round[x][2] = undefined;
-											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
-											tour[i].battlesinvtie.push(room.id);
-											var success = true;
-											break tourinvalidlabel;
-										} else if (rightplayer) {
-											var success = false;
-										} else {
-											c.round[x][2] = undefined;
-											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
-											tour[i].battlesinvtie.push(room.id);
-											var success = true;
-											break tourinvalidlabel;
-										}
+			if (!config.tourdisableinvalidate) {
+				if (!user.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
+			
+	
+				var missingp1 = !room.battle.getPlayer(0);
+				var missingp2 = !room.battle.getPlayer(1);
+				var rightplayers = ( (missingp1 || missingp2) ? false : ( room.p1.userid == room.battle.getPlayer(0).userid && room.p2.userid == room.battle.getPlayer(1).userid ) );
+	
+				if (missingp1) {
+					var rightplayer = ( missingp2 ? false : ( room.p2.userid == room.battle.getPlayer(1).userid ) );
+				} else if (missingp2) {
+					var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid );
+				} else {
+					var rightplayer = ( room.p1.userid == room.battle.getPlayer(0).userid || room.p2.userid == room.battle.getPlayer(1).userid );
+				}
+					for (var i in tour) {
+						var c = tour[i];
+						if (c.status == 2) {
+							for (var x in c.round) {
+								if (c.round[x] === undefined) continue;
+								if ((room.p1.userid == c.round[x][0] && room.p2.userid == c.round[x][1]) || (room.p2.userid == c.round[x][0] && room.p1.userid == c.round[x][1])) {
+									if (c.round[x][2] == -1) {
+												if ( room.triedinvalid && user.can('ban') ) {
+													c.round[x][2] = undefined;
+													Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
+													var success = true;
+													tour[i].battlesinvtie.push(room.id);
+													break tourinvalidlabel;
+												} else if (rightplayers) {
+													var success = false;
+												} else if (rightplayer & !(missingp1 || missingp2) ) {
+													c.round[x][2] = undefined;
+													Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
+													tour[i].battlesinvtie.push(room.id);
+													var success = true;
+													break tourinvalidlabel;
+												} else if (rightplayer) {
+													var success = false;
+												} else {
+													c.round[x][2] = undefined;
+													Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
+													tour[i].battlesinvtie.push(room.id);
+													var success = true;
+													break tourinvalidlabel;
+												}
+									}
+								}
 							}
 						}
 					}
-				}
-			}
-
-			if (!success) {
-				room.triedinvalid = true;
-				if (user.can('ban')) {
-					return this.sendReply('Are you sure you want to invalidate this battle? If so, repeat the command.');
-				} else {
-					return this.sendReply('This battle is not weird enough for you to use this command. Bring a mod here to use it instead.');
+		
+					if (!success) {
+						room.triedinvalid = true;
+						if (user.can('ban')) {
+							return this.sendReply('Are you sure you want to invalidate this battle? If so, repeat the command.');
+						} else {
+							return this.sendReply('This battle is not weird enough for you to use this command. Bring a mod here to use it instead.');
+						}
+					}
+			} else {
+				if (!user.can('ban')) return this.sendReply('You do not have enough authority to use this command.');
+				for (var i in tour) {
+					var c = tour[i];
+					if (c.status == 2) {
+						for (var x in c.round) {
+							if (c.round[x] === undefined) continue;
+							if ((room.p1.userid == c.round[x][0] && room.p2.userid == c.round[x][1]) || (room.p2.userid == c.round[x][0] && room.p1.userid == c.round[x][1])) {
+								if (c.round[x][2] == -1) {
+									c.round[x][2] = undefined;
+									Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>');
+									tour[i].battlesinvtie.push(room.id);
+									break tourinvalidlabel;
+								}
+							}
+						}
+					}
 				}
 			}
 		}
