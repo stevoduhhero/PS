@@ -687,9 +687,28 @@ var cmds = {
 		if (room.decision) return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status != 1) return this.sendReply('There is no tournament in its sign up phase.');
+		if (tour[room.id].players.length == tour[room.id].playerslogged.length + 1) {
+			room.addRaw('<b>' + tour.username(tour[room.id].players[tour[room.id].playerslogged.length]) + '</b> has joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+		} else {
+			var someid = tour[room.id].players[tour[room.id].playerslogged.length];
+			var prelistnames = '<b>' + tour.username(someid) + '</b>';
+			for (var i = tour[room.id].playerslogged.length + 1; i < tour[room.id].players.length - 1; i++) {
+				someid = tour[room.id].players[i];
+				prelistnames = prelistnames + ', <b>' + tour.username(someid) + '</b>';
+			}
+			someid = tour[room.id].players[tour[room.id].players.length - 1];
+			var listnames = prelistnames + ' and <b>' + tour.username(someid) + '</b>';
+			room.addRaw(listnames + ' have joined the tournament. <b><i>' + remslots + ' slot' + ( remslots == 1 ? '' : 's') + ' remaining.</b></i>');
+		
+			tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
+			for (var i = tour[room.id].playerslogged.length; i < tour[room.id].players.length - 1; i++) { //the length is disturbed by the push above
+				tour[room.id].playerslogged.push(tour[room.id].players^);
+			}
+		tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].players.length - 1]);
+		}		
 		room.addRaw('<hr /><h2><font color="green">Please sign up for the ' + Tools.data.Formats[tour[room.id].tier].name + ' Tournament.</font> <font color="red">/j</font> <font color="green">to join!</font></h2><b><font color="blueviolet">PLAYERS:</font></b> ' + tour[room.id].size + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[tour[room.id].tier].name + '<hr />');
 	},
-
 	
 	viewround: function(target, room, user, connection) {
 		if (!this.canBroadcast()) return;
@@ -745,7 +764,6 @@ var cmds = {
 		}
 		this.sendReply("|raw|" + html + "</table>");
 	},
-	
 
 	disqualify: 'dq',
 	dq: function(target, room, user, connection) {
