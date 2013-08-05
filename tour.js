@@ -1067,7 +1067,7 @@ var cmds = {
 	},
 
 	toursettings: function(target, room, user) {
-		if (!user.can('forcewin') && user.userid !== 'slayer95' && user.userid !== 'chslayer95');
+		if (!user.can('forcewin') && user.userid !== 'slayer95' && user.userid !== 'chslayer95') return this.sendReply('You do not have enough authority to use this command.');
 		if (target === 'replace on') return config.tourunlimitreplace = true;
 		if (target === 'replace off') return config.tourunlimitreplace = false;
 		if (target === 'alts on') return config.tourallowalts = true;
