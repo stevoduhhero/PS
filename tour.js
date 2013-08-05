@@ -94,7 +94,6 @@ exports.tour = function(t) {
 		join: function(uid, rid) {
 			var players = tour[rid].players;
 			var init = false;
-			var somelog = "";
 			checkaltslabel:
 			{
 				if (config.tourallowalts){
