@@ -266,7 +266,7 @@ exports.tour = function(t) {
 					var p2n = tour.username(round[i][1]);
 					if (p1n.substr(0, 6) === 'Guest ') p1n = round[i][0];
 					if (p2n.substr(0, 6) === 'Guest ') p2n = round[i][1];
-					var tabla = "";if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
+					var tabla = ""; if (!firstMatch) {var tabla = "</center><table align=center cellpadding=0 cellspacing=0>";firstMatch = true;}
 					html += tabla + "<tr><td align=right>" + clean(p1n) + "</td><td>&nbsp;VS&nbsp;</td><td>" + clean(p2n) + "</td></tr>";
 				}
 			}
