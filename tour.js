@@ -226,27 +226,25 @@ exports.tour = function(t) {
 			var sList = tour[rid].players;
 			tour.shuffle(sList);
 			var key = 0;
-			do
-				{
-					if (numByes > 0) {
-						r.push([sList[key], undefined, sList[key]]);
-						tour[rid].winners.push(sList[key]);
-						tour[rid].byes.push(sList[key]);
-						numByes -= 1
-						key++;
-					}
+			do {
+				if (numByes > 0) {
+					r.push([sList[key], undefined, sList[key]]);
+					tour[rid].winners.push(sList[key]);
+					tour[rid].byes.push(sList[key]);
+					numByes -= 1
+					key++;
 				}
+			}
 			while (numByes > 0);
-			do
-				{
-					var match = new Array(); //[p1, p2, result]
-					match.push(sList[key]);
-					key++;
-					match.push(sList[key]);
-					key++;
-					match.push(undefined);
-					r.push(match);
-				}
+			do {
+				var match = new Array(); //[p1, p2, result]
+				match.push(sList[key]);
+				key++;
+				match.push(sList[key]);
+				key++;
+				match.push(undefined);
+				r.push(match);
+			}
 			while (key != sList.length);
 			tour[rid].roundNum++;
 			tour[rid].status = 2;
