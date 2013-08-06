@@ -98,14 +98,13 @@ exports.tour = function(t) {
 			var init = false;
 			checkaltslabel:
 			{
-				if (config.tourallowalts){
-					for (var i=0; i<players.length; i++) {
-						if (players[i] == uid) {
-							init = true;
-							break checkaltslabel;
-						}
+				for (var i=0; i<players.length; i++) {
+					if (players[i] == uid) {
+						init = true;
+						break checkaltslabel;
 					}
-				} else {
+				}
+				if (!config.tourallowalts){
 					for (var i=0; i<players.length; i++) {
 						if (players[i] == uid) {
 							init = true;
