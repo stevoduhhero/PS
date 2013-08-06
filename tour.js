@@ -1076,15 +1076,15 @@ var cmds = {
 		if (target === 'invalidate on') return config.tourdisableinvalidate = true;
 		if (target === 'invalidate off') return config.tourdisableinvalidate = false;
 		if (target.substr(0,4) === 'auth' && config.groupsranking.indexOf(target.substr(5,1)) != -1) return config.tourauth = target.substr(5,1);
-		if (target === 'show' || target === 'display' || target === 'view') {
+		if (target === 'view' || target === 'show' || target === 'display') {
 			var msg = '';
 			msg = msg + 'Can players be replaced after the first round? ' + new Boolean(config.tourunlimitreplace) + '. ';
 			msg = msg + 'Are alts allowed to join to the same tournament? ' + new Boolean(config.tourallowalts) + '. ';
 			msg = msg + 'Are battles being invalidated automatically if another player has joined the battle? ' + new Boolean(config.tourdisableinvalidate) + '. ';
-			msg = msg + 'Which minimal rank is required in order to use tournament commands? ' + new Boolean(config.tourauth + '.';
+			msg = msg + 'Which minimal rank is required in order to use tournament commands? ' + (!config.tourauth ? '+' : (config.tourauth === ' ' ? 'None, which is highly not recommended' : config.tourauth)) + '.';
 			return this.sendReplyBox(msg);
 		}
-		return this.sendReply('Valid targets are: replace on/off, alts on/off, invalidate on/off, auth SYMBOL');
+		return this.sendReply('Valid targets are: view, replace on/off, alts on/off, invalidate on/off, auth SYMBOL');
 	},
 
 	/* tourdoc: function() {
