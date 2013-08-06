@@ -1080,7 +1080,7 @@ var cmds = {
 			var msg = '';
 			msg = msg + 'Can players be replaced after the first round? ' + new Boolean(config.tourunlimitreplace) + '. ';
 			msg = msg + 'Are alts allowed to join to the same tournament? ' + new Boolean(config.tourallowalts) + '. ';
-			msg = msg + 'Are battles being invalidated automatically if another player has joined the battle? ' + new Boolean(config.tourdisableinvalidate) + '. ';
+			msg = msg + 'Are battles being invalidated automatically if another player has joined the battle? ' + new Boolean(!config.tourdisableinvalidate) + '. ';
 			msg = msg + 'Which minimal rank is required in order to use tournament commands? ' + (!config.tourauth ? '+' : (config.tourauth === ' ' ? 'None, which is highly not recommended' : config.tourauth)) + '.';
 			return this.sendReplyBox(msg);
 		}
