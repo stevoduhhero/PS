@@ -502,6 +502,7 @@ var cmds = {
 		if (!target) return this.sendReply('Proper syntax for this command: /tourtime time');
 		target = parseInt(target);
 		if (isNaN(target)) return this.sendReply('Proper syntax for this command: /tourtime time');
+		if (target < 0) return this.sendReply('Why would you want to reschedule a tournament for the past?');
 		target = Math.ceil(target);
 		tour.timers[room.id].time = target;
 		tour.timers[room.id].startTime = tour.currentSeconds;
@@ -1077,7 +1078,7 @@ var cmds = {
 			var msg = '';
 			msg = msg + 'Can players be replaced after the first round? ' + new Boolean(config.tourunlimitreplace) + '. ';
 			msg = msg + 'Are alts allowed to join to the same tournament? ' + new Boolean(config.tourallowalts) + '. ';
-			msg = msg + 'Are battles being invalidated automatically if another player has joined the battle? ' + new Boolean(!config.tourdisableinvalidate) + '. ';
+			msg = msg + 'Are battles being invalidated automatically if another player has joined the battle? ' + !config.tourdisableinvalidate + '. ';
 			msg = msg + 'Which minimal rank is required in order to use tournament commands? ' + (!config.tourauth ? '+' : (config.tourauth === ' ' ? 'None, which is highly not recommended' : config.tourauth)) + '.';
 			return this.sendReplyBox(msg);
 		}
