@@ -1328,6 +1328,44 @@ Rooms.global.startBattle = function(p1, p2, format, rated, p1team, p2team) {
 		}
 	}
 };
+
+Rooms.BattleRoom.prototype.joinBattle = function(user, team) {
+	var slot = undefined;
+	if (this.rated) {
+		if (this.rated.p1 === user.userid) {
+			slot = 0;
+		} else if (this.rated.p2 === user.userid) {
+			slot = 1;
+		} else {
+			return;
+		}
+	}
+	
+	if (this.tournament) {
+		if (this.p1.userid === user.userid) {
+			slot = 0;
+		} else if (this.p2.userid === user.userid) {
+			slot = 1;
+		} else {
+			return;
+		}
+	}
+	
+	this.battle.join(user, slot, team);
+	Rooms.GlobalRoom.battleCount += (this.battle.active?1:0) - (this.active?1:0);
+	this.active = this.battle.active;
+	if (this.active) {
+		this.title = ""+this.battle.p1+" vs. "+this.battle.p2;
+		this.send('|title|'+this.title);
+	}
+	this.update();
+	
+	if (this.parentid) {
+		Rooms.get(this.parentid).updateRooms();
+	}
+};
+
+
 Rooms.BattleRoom.prototype.win = function(winner) {
 	//tour
 	if (this.tournament) {
@@ -1362,11 +1400,11 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 									if (rightplayers) {
 										if (istie) {
 											c.round[x][2] = undefined;
-											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + this.p1.name + '</b>' + " and " + '<b>' + this.p2.name + '</b>' + " ended in a " + '<b>' + "tie." + '</b>' + " Please have another battle.");
+											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + tour.username(this.p1.name) + '</b>' + " and " + '<b>' + this.p2.name + '</b>' + " ended in a " + '<b>' + "tie." + '</b>' + " Please have another battle.");
 											tour[i].battlesinvtie.push(this.id);
 										} else {
 											tour.lose(loserid, i);
-											Rooms.rooms[i].addRaw('<b>' + winnerid + '</b> won their battle against ' + loserid + '.</b>');
+											Rooms.rooms[i].addRaw('<b>' + tour.username(winnerid) + '</b> won their battle against ' + tour.username(loserid) + '.</b>');
 											var r = tour[i].round;
 											var cc = 0;
 											for (var y in r) {
@@ -1381,7 +1419,7 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 									} else if (rightplayer) {
 										if (missingp1 || missingp2) {
 											tour.lose(loserid, i);
-											Rooms.rooms[i].addRaw('<b>' + winnerid + '</b> won their battle against ' + loserid + '.</b>');
+											Rooms.rooms[i].addRaw('<b>' + tour.username(winnerid) + '</b> won their battle against ' + tour.username(loserid) + '.</b>');
 											var r = tour[i].round;
 											var cc = 0;
 											for (var y in r) {
@@ -1394,16 +1432,16 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 											}
 										} else if (!config.tourdisableinvalidate) {
 											c.round[x][2] = undefined;
-											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + this.p1.name + '</b>' + " and " + '<b>' + this.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>' + " Please have another battle.");
+											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + tour.username(this.p1.name) + '</b>' + " and " + '<b>' + tour.username(this.p2.name) + '</b>' + " was " + '<b>' + "invalidated." + '</b>' + " Please have another battle.");
 											tour[i].battlesinvtie.push(this.id);
 										} else {
 											if (istie) {
 												c.round[x][2] = undefined;
-												Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + this.p1.name + '</b>' + " and " + '<b>' + this.p2.name + '</b>' + " ended in a " + '<b>' + "tie." + '</b>' + " Please have another battle.");
+												Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + tour.username(this.p1.name) + '</b>' + " and " + '<b>' + tour.username(this.p2.name) + '</b>' + " ended in a " + '<b>' + "tie." + '</b>' + " Please have another battle.");
 												tour[i].battlesinvtie.push(this.id);
 											} else {
 												tour.lose(loserid, i);
-												Rooms.rooms[i].addRaw('<b>' + winnerid + '</b> won their battle against ' + loserid + '.</b>');
+												Rooms.rooms[i].addRaw('<b>' + tour.username(winnerid) + '</b> won their battle against ' + tour.username(loserid) + '.</b>');
 												var r = tour[i].round;
 												var cc = 0;
 												for (var y in r) {
@@ -1419,16 +1457,16 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 									} else {
 										if (!config.tourdisableinvalidate) {
 											c.round[x][2] = undefined;
-											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + this.p1.name + '</b>' + " and " + '<b>' + this.p2.name + '</b>' + " was " + '<b>' + "invalidated." + '</b>' + " Please have another battle.");
+											Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + tour.username(this.p1.name) + '</b>' + " and " + '<b>' + tour.username(this.p2.name) + '</b>' + " was " + '<b>' + "invalidated." + '</b>' + " Please have another battle.");
 											tour[i].battlesinvtie.push(this.id);
 										} else {
 											if (istie) {
 												c.round[x][2] = undefined;
-												Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + this.p1.name + '</b>' + " and " + '<b>' + this.p2.name + '</b>' + " ended in a " + '<b>' + "tie." + '</b>' + " Please have another battle.");
+												Rooms.rooms[i].addRaw("The tournament match between " + '<b>' + tour.username(this.p1.name) + '</b>' + " and " + '<b>' + tour.username(this.p2.name) + '</b>' + " ended in a " + '<b>' + "tie." + '</b>' + " Please have another battle.");
 												tour[i].battlesinvtie.push(this.id);
 											} else {
 												tour.lose(loserid, i);
-												Rooms.rooms[i].addRaw('<b>' + winnerid + '</b> won their battle against ' + loserid + '.</b>');
+												Rooms.rooms[i].addRaw('<b>' + tour.username(winnerid) + '</b> won their battle against ' + tour.username(loserid) + '.</b>');
 												var r = tour[i].round;
 												var cc = 0;
 												for (var y in r) {
