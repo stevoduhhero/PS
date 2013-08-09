@@ -807,6 +807,7 @@ var cmds = {
 				if (reply) reply = reply.substr(0, reply.length - 2);
 			} else {
 				var reply = '';
+				var opponent = '';
 				var targets = tour.splint(target);
 				for (var i=0; i<targets.length; i++) {
 					var someuser = Users.get(targets[i]);
