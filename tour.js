@@ -824,7 +824,7 @@ var cmds = {
 					prelistnames = prelistnames + ', <b>' + tour.username(someid) + '</b>';
 				}
 				someid = tour[room.id].players[tour[room.id].players.length - 1];
-				var listnames = prelistnames + ' and>' <b + tour.username(someid) + '</b>';
+				var listnames = prelistnames + ' and <b>' + tour.username(someid) + '</b>';
 				room.addRaw(listnames + ' have joined the tournament.' + tour.remsg(remslots));
 			
 				tour[room.id].playerslogged.push(tour[room.id].players[tour[room.id].playerslogged.length]);
