@@ -1140,7 +1140,7 @@ Rooms.BattleRoom.prototype.joinBattle = function(user, team) {
 	}
 	
 	this.battle.join(user, slot, team);
-	Rooms.GlobalRoom.battleCount += (this.battle.active?1:0) - (this.active?1:0);
+	Rooms.global.battleCount += (this.battle.active?1:0) - (this.active?1:0);
 	this.active = this.battle.active;
 	if (this.active) {
 		this.title = ""+this.battle.p1+" vs. "+this.battle.p2;
@@ -1304,6 +1304,7 @@ Rooms.BattleRoom.prototype.win = function(winner) {
 			});
 		}
 	}
+	Rooms.global.battleCount += 0 - (this.active?1:0);
 	this.active = false;
 	this.update();
 };
