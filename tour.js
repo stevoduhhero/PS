@@ -521,7 +521,7 @@ var cmds = {
 		if (!target) return this.sendReply('Proper syntax for this command: /tourtime time');
 		target = parseInt(target);
 		if (isNaN(target)) return this.sendReply('Proper syntax for this command: /tourtime time');
-		if (target < 0) return this.sendReply('Why would you want to reschedule a tournament for the past?');
+		if (target < 1) return this.sendReply('That is not a valid reschedule.');
 		target = Math.ceil(target);
 		tour.timers[room.id].time = target;
 		tour.timers[room.id].startTime = tour.currentSeconds;
