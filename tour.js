@@ -894,10 +894,21 @@ var cmds = {
 		for (var i in tour) {
 			var c = tour[i];
 			if (typeof c == "object") {
-				if (c.status == 1) html += '<button name="joinRoom" value="' + i + '">' + Rooms.rooms[i].title + ' - ' + Tools.data.Formats[c.tier].name + '</button> ';
+				if (c.status == 1 && !Rooms.rooms[i].isPrivate && !Rooms.rooms[i].staffRoom) html += '<button name="joinRoom" value="' + i + '">' + Rooms.rooms[i].title + ' - ' + Tools.data.Formats[c.tier].name + '</button> ';
 			}
 		}
 		if (html == oghtml) html += "There are currently no tournaments in their signup phase.";
+		this.sendReply('|raw|' + html + "<hr />");
+	},
+
+	polls: function(target, room, user, connection){
+		if(!this.canBroadcast()) return;
+		var oghtml = "<hr /><h2>Active Polls:</h2>";
+		var html = oghtml;
+		for(var u in tour){
+			if(tour[u].question != undefined && !Rooms.rooms[u].isPrivate && !Rooms.rooms[i].staffRoom) html += '<button name="joinRoom" value="' + u + '">' + Rooms.rooms[u].title + ' - ' + tour[u].question + '</button> ';
+		}
+		if (html == oghtml) html += "There are currently no active polls.";
 		this.sendReply('|raw|' + html + "<hr />");
 	},
 
