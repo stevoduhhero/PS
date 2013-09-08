@@ -673,12 +673,12 @@ var cmds = {
 					if (c.round[x][0] && c.round[x][1] && !c.round[x][2]) {
 						var userOne = Users.get(c.round[x][0]);
 						var userTwo = Users.get(c.round[x][1]);
-						if (userOne) {
+						if (userOne && userOne.connected) {
 							userOne.popup("Remember that you have a pending tournament battle in the room " + room.title + ". Unless you start soon your battle against " + tour.username(c.round[x][1]) + "in the tier " + Tools.data.Formats[tour[room.id].tier].name + ", you could lose by W.O.");
 						} else {
 							unfound.push(c.round[x][0]);
 						}
-						if (userTwo) {
+						if (userTwo && userTwo.connected) {
 							userTwo.popup("Remember that you have a pending tournament battle in the room " + room.title + ". Unless you start soon your battle against " + tour.username(c.round[x][0]) + "in the tier " + Tools.data.Formats[tour[room.id].tier].name + ", you could lose by W.O.");
 						} else {
 							unfound.push(c.round[x][1]);
@@ -691,7 +691,7 @@ var cmds = {
 				for (var i = 0; i < targets.length; i++) {
 					var nicetarget = false;
 					var someuser = Users.get(targets[i]);
-					if (someuser) {
+					if (someuser && someuser.connected) {
 						for (var x in c.round) {
 							if (c.round[x][0] && c.round[x][1] && !c.round[x][2]) {
 								if (c.round[x][0] === someuser.userid) {
@@ -709,7 +709,7 @@ var cmds = {
 					if (nicetarget) {
 						someuser.popup("Remember that you have a pending tournament battle in the room " + room.title + ". Unless you start soon your battle against " + tour.username(opponent) + "in the tier " + Tools.data.Formats[tour[room.id].tier].name + ", you could lose by W.O.");
 					} else {
-						unfound.push(someuser.name);
+						unfound.push(targets[i]);
 					}
 				}
 			}
