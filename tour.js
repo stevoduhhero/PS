@@ -1144,9 +1144,9 @@ var cmds = {
 			msg += '... in groups of ' + (config.tourtimeperiod ? config.tourtimeperiod : 4) + ' players.';
 			return this.sendReplyBox(msg);
 		} else {
-			return this.sendReply('Son argumentos validos para este comando: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SIMBOLO, margin NUMERO, period NUMERO');
+			return this.sendReply('Valid arguments: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SYMBOL, margin NUMBER, period NUMBER');
 		}
-		return this.sendReply('Configuracion global relativa a torneos guardada.');
+		return this.sendReply('Global tournaments setings saved.');
 	},
 
 	roomtourconfig: 'rtourconfig',
@@ -1182,9 +1182,9 @@ var cmds = {
 			msg += '... high authority? ' + (!room.tourhighauth ? '#' : (room.tourhighauth === ' ' ? 'Ninguno' : room.tourhighauth)) + '.<br>';
 			return this.sendReplyBox(msg);
 		} else {
-			return this.sendReply('Son argumentos validos para este comando: view, lowauth/midauth/highauth SIMBOLO');
+			return this.sendReply('Valid arguments: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SYMBOL, margin NUMBER, period NUMBER');
 		}
-		return this.sendReply('Configuracion de la sala relativa a torneos guardada.');
+		return this.sendReply('Room tournaments setings saved.');
 	},
 	
 	ayudatorneos: 'tourhelp',
