@@ -114,8 +114,6 @@ exports.tour = function (t) {
 				byes: new Array(),
 				playerslogged: new Array(),
 				battles: new Object(),
-				battlesended: new Array(),
-				battlesinvtie: new Array(),
 				question: undefined,
 				answerList: new Array(),
 				answers: new Object(),
@@ -507,7 +505,6 @@ exports.tour = function (t) {
 				//end tour
 				Rooms.rooms[rid].addRaw('<h2><font color="green">Congratulations <font color="black">' + toUserName(w[0]) + '</font>!  You have won the ' + Tools.data.Formats[tour[rid].tier].name + ' Tournament!</font></h2>' + '<br><font color="blue"><b>SECOND PLACE:</b></font> ' + toUserName(l[0]) + '<hr />');
 				tour[rid].status = 0;
-				tour[rid].battlesended = [];
 			} else {
 				var p = w.randomize();
 				for (var i = 0; i < p.length / 2; i++) {
@@ -517,7 +514,6 @@ exports.tour = function (t) {
 				}
 				var html = tour.roundTable(Rooms.rooms[rid]);
 				Rooms.rooms[rid].addRaw(html);
-				tour[rid].battlesended = [];
 			}
 		}
 	};
@@ -1080,7 +1076,6 @@ var cmds = {
 				if (c.round[x].indexOf(room.p1.userid) !== -1 && c.round[x].indexOf(room.p2.userid) !== -1) {
 					c.round[x][2] = undefined;
 					Rooms.rooms[rid].addRaw("The tournament match between " + '<b>' + room.p1.name + '</b>' + " and " + '<b>' + room.p2.name + '</b>' + " was " + '<b>' + "invalidated" + '</b>' + ' by ' + user.name);
-					c.battlesinvtie.push(room.id);
 					break;
 				}
 			}
@@ -1149,9 +1144,9 @@ var cmds = {
 			msg += '... in groups of ' + (config.tourtimeperiod ? config.tourtimeperiod : 4) + ' players.';
 			return this.sendReplyBox(msg);
 		} else {
-			return this.sendReply('Valid arguments: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SYMBOL, margin NUMBER, period NUMBER');
+			return this.sendReply('Son argumentos validos para este comando: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SIMBOLO, margin NUMERO, period NUMERO');
 		}
-		return this.sendReply('Global tournaments setings saved.');
+		return this.sendReply('Configuracion global relativa a torneos guardada.');
 	},
 
 	roomtourconfig: 'rtourconfig',
@@ -1187,9 +1182,9 @@ var cmds = {
 			msg += '... high authority? ' + (!room.tourhighauth ? '#' : (room.tourhighauth === ' ' ? 'Ninguno' : room.tourhighauth)) + '.<br>';
 			return this.sendReplyBox(msg);
 		} else {
-			return this.sendReply('Valid arguments: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SYMBOL, margin NUMBER, period NUMBER');
+			return this.sendReply('Son argumentos validos para este comando: view, lowauth/midauth/highauth SIMBOLO');
 		}
-		return this.sendReply('Room tournaments setings saved.');
+		return this.sendReply('Configuracion de la sala relativa a torneos guardada.');
 	},
 	
 	ayudatorneos: 'tourhelp',
@@ -1552,7 +1547,6 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 					if (istie) {
 						c.round[x][2] = undefined;
 						Rooms.rooms[rid].addRaw("The tournament match between " + '<b>' + toUserName(this.p1.name) + '</b>' + " and " + '<b>' + toUserName(this.p2.name) + '</b>' + " finished in a " + '<b>' + "tie." + '</b>' + " Please battle again.");
-						tour[rid].battlesinvtie.push(this.id);
 					} else {
 						tour.lose(loserid, rid);
 						Rooms.rooms[rid].addRaw('<b>' + toUserName(winnerid) + '</b> won their battle against ' + toUserName(loserid) + '.</b>');
@@ -1567,7 +1561,6 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 							tour.nextRound(rid);
 						}
 					}
-					tour[rid].battlesended.push(this.id);
 				}
 			}
 		}
@@ -1658,11 +1651,6 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 		}
 	}
 	Rooms.global.battleCount += 0 - (this.active ? 1 : 0);
-	if (!Rooms.global.battleCount) {
-		for (var uid in Users.users) {
-			Users.users[uid].active = false;
-		}
-	}
 	this.active = false;
 	this.update();
 };
