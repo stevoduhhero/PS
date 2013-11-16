@@ -1187,8 +1187,6 @@ var cmds = {
 		return this.sendReply('Room tournaments setings saved.');
 	},
 	
-	ayudatorneos: 'tourhelp',
-	ayudatorneo: 'tourhelp',
 	tourdoc: 'tourhelp',
 	tourhelp: function(target, room, user) {
 		if (!this.canBroadcast()) return;
