@@ -552,7 +552,7 @@ var cmds = {
 
 		this.logEntry(user.name + ' used /hotpatch ' + target);
 
-		if (target === 'chat') {
+		if (target === 'chat' || target === 'commands') {
 			try {
 				CommandParser.uncacheTree('./command-parser.js');
 				CommandParser = require('./command-parser.js');
