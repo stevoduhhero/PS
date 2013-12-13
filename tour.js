@@ -291,10 +291,10 @@ exports.tour = function (t) {
 			return html;
 		},
 		remsg: function (quorum, useronly) {
-			if (!isFinite(apparent)) return '';
-			if (apparent === 0) return ' The first round of the tournament starts now.';
-			if (nonhtml) return (' ' + apparent + ' slot' + (apparent === 1 ? '' : 's') + ' remaining.');
-			return (' <b><i>' + apparent + ' slot' + (apparent === 1 ? '' : 's') + ' remaining.</b></i>');
+			if (!isFinite(useronly)) return '';
+			if (useronly === 0) return ' The first round of the tournament starts now.';
+			if (nonhtml) return (' ' + useronly + ' slot' + (useronly === 1 ? '' : 's') + ' remaining.');
+			return (' <b><i>' + useronly + ' slot' + (useronly === 1 ? '' : 's') + ' remaining.</b></i>');
 		},
 		reportdue: function (room, connection) {
 			var trid = tour[room.id];
