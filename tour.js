@@ -697,11 +697,10 @@ var cmds = {
 		tour[rid].status = 1;
 		tour[rid].players = new Array();
 
-		var joinButton = '<button name="joinTour" value="' + room.id + '">Unirse</button>';
-		var joinHelp = 'Digita </font> <font color="red">/j</font> <font color="green"> para unirte.</font>';
+		var joinHelp = '</font> <font color="red">/j</font> <font color="green"> to join</font>';
 		
-		Rooms.rooms[rid].addRaw('<hr /><h2><font color="green">' + sanitize(user.name) + ' ha iniciado un torneo de formato ' + Tools.data.Formats[targets[0]].name + ' ' + (Tools.data.Formats[targets[0]].mod ? '' : '(Gen 6). ') + joinHelp + '</h2><b><font color="blueviolet">Jugadores:</font></b> ' + targets[1] + '<br /><font color="blue"><b>FORMATO:</b></font> ' + Tools.data.Formats[targets[0]].name + '<hr /><br /><font color="red"><b>Recuerda que deberas mantener tu nombre hasta el final.</b></font>');
-		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>El torneo empezara en ' + tour.timers[rid].time + ' minuto' + (tour.timers[rid].time == 1 ? '' : 's') + '.<i>');
+		Rooms.rooms[rid].addRaw('<hr /><h2><font color="green">' + sanitize(user.name) + ' has started a ' + Tools.data.Formats[targets[0]].name + ' Tournament.' + joinHelp + '</h2><b><font color="blueviolet">PLAYERS:</font></b> ' + targets[1] + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[targets[0]].name + '<hr />');
+		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute' + (tour.timers[rid].time == 1 ? '' : 's') + '.<i>');
 	},
 
 	endtour: function (target, room, user, connection) {
@@ -763,7 +762,7 @@ var cmds = {
 		if (room.type !== 'chat') {
 			connection.sendTo(room, 'Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		} else if (tour[room.id] == undefined || tour[room.id].status == 0) {
-			connection.sendTo(room, 'No hay torneos activos in this room.');
+			connection.sendTo(room, 'There is no active tournament in this room.');
 		} else if (tour[room.id].status == 2) {
 			connection.sendTo(room, 'Signups for the current tournament are over.');
 		} else if (tour.joinable(user.userid, room.id)) {
@@ -796,7 +795,7 @@ var cmds = {
 	fj: function (target, room, user, connection) {
 		if (!tour.lowauth(user, room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.type !== 'chat') return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
-		if (tour[room.id] == undefined || tour[room.id].status == 0 || tour[room.id].status == 2) return this.sendReply('No hay un torneo en su fase de inscripcion.');
+		if (tour[room.id] == undefined || tour[room.id].status == 0 || tour[room.id].status == 2) return this.sendReply('There is no active tournament in this room.');
 		if (!target) return this.sendReply('Please specify a user who you\'d like to participate.');
 		var targetUser = Users.get(target);
 		if (!targetUser) return this.sendReply('The user \'' + target + '\' doesn\'t exist.');
