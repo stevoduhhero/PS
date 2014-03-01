@@ -1497,7 +1497,8 @@ Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
 		} else if (this.rated.p2 === user.userid) {
 			slot = 1;
 		} else {
-			return;
+			user.popup("This is a rated battle; your username must be "+this.rated.p1+" or "+this.rated.p2+" to join.");
+			return false;
 		}
 	}
 
@@ -1507,10 +1508,11 @@ Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
 		} else if (this.p2.userid === user.userid) {
 			slot = 1;
 		} else {
-			return;
+			return false;
 		}
 	}
 
+	this.auth[user.userid] = '\u2605';
 	this.battle.join(user, slot, team);
 	Rooms.global.battleCount += (this.battle.active ? 1 : 0) - (this.active ? 1 : 0);
 	this.active = this.battle.active;
