@@ -1273,19 +1273,13 @@ var cmds = {
 		} else {
 			target = target.toLowerCase();
 		}
-		var OUarray = ['ou', 'oucurrent', 'gen5ou'];
+		var OUarray = ['ou', 'oucurrent'];
 		if (OUarray.indexOf(target) !== -1) {
 			for (var i in OUarray) {
 				if (tour[room.id].answerList.indexOf(OUarray[i]) !== -1) {
 					target = OUarray[i];
 				}
 			}
-		}
-		if (Tools.data.Formats['gen5' + target]) {
-			target = 'gen5' + target;
-		}
-		if (Tools.data.Formats[target + 'beta']) {
-			target = target + 'beta';
 		}
 		if (tour[room.id].answerList.indexOf(target) == -1) {
 			if (!tour[room.id].freepoll) {
@@ -1657,13 +1651,16 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 
 Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	if (this.resetTimer) {
-		this.send('|inactive|The inactivity timer is already counting down.', user);
+		if (user) this.send('|inactive|The inactivity timer is already counting down.', user);
 		return false;
 	}
 	if (user) {
 		if (!force && this.battle.getSlot(user) < 0) return false;
 		this.resetUser = user.userid;
 		this.send('|inactive|Battle timer is now ON: inactive players will automatically lose when time\'s up. (requested by ' + user.name + ')');
+	} else if (user === false) {
+		this.resetUser = '~';
+		this.add('|inactive|Battle timer is ON: inactive players will automatically lose when time\'s up.');
 	}
 
 	// a tick is 10 seconds
