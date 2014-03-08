@@ -290,11 +290,11 @@ exports.tour = function (t) {
 			html += "</table>";
 			return html;
 		},
-		remsg: function (quorum, useronly) {
-			if (!isFinite(useronly)) return '';
-			if (useronly === 0) return ' The first round of the tournament starts now.';
-			if (nonhtml) return (' ' + useronly + ' slot' + (useronly === 1 ? '' : 's') + ' remaining.');
-			return (' <b><i>' + useronly + ' slot' + (useronly === 1 ? '' : 's') + ' remaining.</b></i>');
+		remsg: function (quorum, nonhtml) {
+			if (!isFinite(quorum)) return '';
+			if (quorum === 0) return ' The first round of the tournament starts now.';
+			if (nonhtml) return (' ' + quorum + ' slot' + (quorum === 1 ? '' : 's') + ' remaining.');
+			return (' <b><i>' + quorum + ' slot' + (quorum === 1 ? '' : 's') + ' remaining.</b></i>');
 		},
 		reportdue: function (room, connection) {
 			var trid = tour[room.id];
