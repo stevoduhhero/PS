@@ -616,42 +616,10 @@ var cmds = {
 		if (targets.length !== 2) return this.sendReply('Proper syntax for this command: /tour tier, size');
 		var tierMatch = false;
 		var tempTourTier = '';
-		if (targets[0] === 'oucurrent') {
-			targets[0] = 'gen5ou';
-			tierMatch = true;
-		}
-		if (!tierMatch) {
-			if (targets[0] === 'gen6ou' || targets[0] === 'gen6oubeta' || targets[0] === 'ougen6') {
-				targets[0] = 'pokebankoubeta';
+		for (var i = 0; i < tour.tiers.length; i++) {
+			if (targets[0] === tour.tiers[i]) {
 				tierMatch = true;
-			}
-		}
-		if (!tierMatch) {
-			if (Tools.data.Formats[targets[0] + 'beta']) {
-				targets[0] = targets[0] + 'beta';
-				tierMatch = true;
-			}
-		}
-		if (!tierMatch) {
-			for (var i = 0; i < tour.tiers.length; i++) {
-				if (targets[0] === tour.tiers[i]) {
-					tierMatch = true;
-					break;
-				}
-			}
-		}
-		if (!tierMatch) {
-			if (Tools.data.Formats['gen5' + targets[0]]) {
-				targets[0] = 'gen5' + targets[0];
-				tierMatch = true;
-			}
-		}
-		if (!tierMatch) {
-			for (var i = 0; i < tour.tiers.length; i++) {
-				if (targets[0] === tour.tiers[i]) {
-					tierMatch = true;
-					break;
-				}
+				break;
 			}
 		}
 		if (!tierMatch) {
