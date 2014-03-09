@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Functions and Commands supporting tournaments and polls
  * 
@@ -1528,10 +1526,11 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 	if (rid) {
 		var winnerid = toId(winner);
 		var loserid = this.p1.userid;
+		var istie = false;
 		if (this.p1.userid == winnerid) {
 			loserid = this.p2.userid;
 		} else if (this.p2.userid != winnerid) {
-			var istie = true;
+			istie = true;
 		}
 		var c = tour[rid];
 		if (c.status === 2) {
