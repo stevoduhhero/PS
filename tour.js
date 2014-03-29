@@ -1447,6 +1447,7 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 		var msg = '<a href="/' + 'battle-' + formaturlid + '-' + this.lastBattle + '" class="ilink"><b>' + ' A battle of the format ' + Tools.getFormat(format).name + ' between ' + p1.getIdentity() + ' and ' + p2.getIdentity() + ' has started.</b></a>';
 		Rooms.lobby.addRaw(msg);
 	}
+	return newRoom;
 };
 
 Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
