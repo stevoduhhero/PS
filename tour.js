@@ -132,29 +132,29 @@ exports.tour = function (t) {
 			if (Rooms.rooms[room.tournament].auth) {
 				if (Rooms.rooms[room.tournament].auth[user.userid] === '#') return true;
 			}
-			if (!config.tourhighauth && user.can('ban')) return true;
-			if (config.tourhighauth && config.groupsranking.indexOf(user.group) >= config.groupsranking.indexOf(config.tourhighauth)) return true;
+			if (!Config.tourhighauth && user.can('ban')) return true;
+			if (Config.tourhighauth && Config.groupsranking.indexOf(user.group) >= Config.groupsranking.indexOf(Config.tourhighauth)) return true;
 			return false;
 		},
 		midauth: function (user, room) {
 			if (room.auth) {
 				if (room.auth[user.userid]) {
 					if (!room.tourmidauth) return true;
-					if (room.tourmidauth && config.groupsranking.indexOf(room.auth[user.userid]) >= config.groupsranking.indexOf(room.tourmidauth)) {
+					if (room.tourmidauth && Config.groupsranking.indexOf(room.auth[user.userid]) >= Config.groupsranking.indexOf(room.tourmidauth)) {
 						return true;
 					}
 				}
-				var indexGlobal = config.groupsranking.indexOf(user.group);
+				var indexGlobal = Config.groupsranking.indexOf(user.group);
 				if (indexGlobal > 2) {
 					if (!room.tourmidauth) return true;
-					if (room.tourmidauth && indexGlobal >= config.groupsranking.indexOf(room.tourmidauth)) {
+					if (room.tourmidauth && indexGlobal >= Config.groupsranking.indexOf(room.tourmidauth)) {
 						return true;
 					}
 				}
 				if (room.tourmidauth === ' ') return true;
 			} else {
-				if (!config.tourmidauth && user.can('broadcast')) return true;
-				if (config.tourmidauth && config.groupsranking.indexOf(user.group) >= config.groupsranking.indexOf(config.tourmidauth)) return true;
+				if (!Config.tourmidauth && user.can('broadcast')) return true;
+				if (Config.tourmidauth && Config.groupsranking.indexOf(user.group) >= Config.groupsranking.indexOf(Config.tourmidauth)) return true;
 			}
 			return false;
 		},
@@ -162,21 +162,21 @@ exports.tour = function (t) {
 			if (room.auth) {
 				if (room.auth[user.userid]) {
 					if (!room.tourlowauth) return true;
-					if (room.tourlowauth && config.groupsranking.indexOf(room.auth[user.userid]) >= config.groupsranking.indexOf(room.tourlowauth)) {
+					if (room.tourlowauth && Config.groupsranking.indexOf(room.auth[user.userid]) >= Config.groupsranking.indexOf(room.tourlowauth)) {
 						return true;
 					}
 				}
-				var indexGlobal = config.groupsranking.indexOf(user.group);
+				var indexGlobal = Config.groupsranking.indexOf(user.group);
 				if (indexGlobal > 0) {
 					if (!room.tourlowauth) return true;
-					if (room.tourlowauth && indexGlobal >= config.groupsranking.indexOf(room.tourlowauth)) {
+					if (room.tourlowauth && indexGlobal >= Config.groupsranking.indexOf(room.tourlowauth)) {
 						return true;
 					}
 				}
 				if (room.tourlowauth === ' ') return true;
 			} else {
-				if (!config.tourlowauth && user.can('broadcast')) return true;
-				if (config.tourlowauth && config.groupsranking.indexOf(user.group) >= config.groupsranking.indexOf(config.tourlowauth)) return true;
+				if (!Config.tourlowauth && user.can('broadcast')) return true;
+				if (Config.tourlowauth && Config.groupsranking.indexOf(user.group) >= Config.groupsranking.indexOf(Config.tourlowauth)) return true;
 			}
 			return false;
 		},
@@ -184,21 +184,21 @@ exports.tour = function (t) {
 			if (room.auth) {
 				if (room.auth[user.userid]) {
 					if (!room.tourpollauth) return true;
-					if (room.tourpollauth && config.groupsranking.indexOf(room.auth[user.userid]) >= config.groupsranking.indexOf(room.tourpollauth)) {
+					if (room.tourpollauth && Config.groupsranking.indexOf(room.auth[user.userid]) >= Config.groupsranking.indexOf(room.tourpollauth)) {
 						return true;
 					}
 				}
-				var indexGlobal = config.groupsranking.indexOf(user.group);
+				var indexGlobal = Config.groupsranking.indexOf(user.group);
 				if (indexGlobal > 0) {
 					if (!room.tourpollauth) return true;
-					if (room.tourpollauth && indexGlobal >= config.groupsranking.indexOf(room.tourpollauth)) {
+					if (room.tourpollauth && indexGlobal >= Config.groupsranking.indexOf(room.tourpollauth)) {
 						return true;
 					}
 				}
 				if (room.tourpollauth === ' ') return true;
 			} else {
-				if (!config.tourpollauth && user.can('broadcast')) return true;
-				if (config.tourpollauth && config.groupsranking.indexOf(user.group) >= config.groupsranking.indexOf(config.tourpollauth)) return true;
+				if (!Config.tourpollauth && user.can('broadcast')) return true;
+				if (Config.tourpollauth && Config.groupsranking.indexOf(user.group) >= Config.groupsranking.indexOf(Config.tourpollauth)) return true;
 			}
 			return false;
 		},
@@ -327,7 +327,7 @@ exports.tour = function (t) {
 			for (var i = 0; i < pl; i++) {
 				if (players[i] === uid) return false;
 			}
-			if (!config.tourallowalts) {
+			if (!Config.tourallowalts) {
 				var userAlts = Users.get(uid).getAlts();
 				for (var i = 0; i < pl; i++) {
 					for (var j = 0; j < userAlts.length; j++) {
@@ -739,8 +739,8 @@ var cmds = {
 				var pplogmarg = Math.ceil(Math.sqrt(tour[room.id].size) / 2);
 				var logperiod = Math.ceil(Math.sqrt(tour[room.id].size));
 			} else {
-				var pplogmarg = (!isNaN(config.tourtimemargin) ? config.tourtimemargin : 3);
-				var logperiod = (config.tourtimeperiod ? config.tourtimeperiod : 4);
+				var pplogmarg = (!isNaN(Config.tourtimemargin) ? Config.tourtimemargin : 3);
+				var logperiod = (Config.tourtimeperiod ? Config.tourtimeperiod : 4);
 			}
 			var perplayerlog = ((tour[room.id].players.length <= pplogmarg) || (remslots + 1 <= pplogmarg));
 			//
@@ -944,7 +944,7 @@ var cmds = {
 		if (room.type !== 'chat') return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined) return this.sendReply('There is no active tournament in this room.');
 		if (tour[room.id].status < 2) return this.sendReply('There is no tournament out of its sign up phase.');
-		if (config.tourdqguard) {
+		if (Config.tourdqguard) {
 			var stop = false;
 			for (var x in tour[room.id].round) {
 				if (tour[room.id].round[x][2] === -1) {
@@ -978,7 +978,7 @@ var cmds = {
 		if (!tour.midauth(user, room)) return this.sendReply('You do not have enough authority to use this command.');
 		if (room.type !== 'chat') return this.sendReply('Prof. Oak: There is a time and place for everything! You cannot do this in battle rooms.');
 		if (tour[room.id] == undefined || tour[room.id].status != 2) return this.sendReply('The tournament is currently in a sign-up phase or is not active, and replacing users only works mid-tournament.');
-		if (tour[room.id].roundNum > 1 && !config.tourunlimitreplace) return this.sendReply('Due to the current settings, replacing users is only allowed in the first round of a tournament. If you do not like it, please contact an administrator.');
+		if (tour[room.id].roundNum > 1 && !Config.tourunlimitreplace) return this.sendReply('Due to the current settings, replacing users is only allowed in the first round of a tournament. If you do not like it, please contact an administrator.');
 		if (!target) return this.sendReply('Proper syntax for this command is: /replace user1, user2.  User 2 will replace User 1 in the current tournament.');
 		var t = tour.splint(target);
 		if (!t[1]) return this.sendReply('Proper syntax for this command is: /replace user1, user2.  User 2 will replace User 1 in the current tournament.');
@@ -1059,40 +1059,40 @@ var cmds = {
 		if (!tour.maxauth(user)) return this.sendReply('You do not have enough authority to use this command.');
 		if (!this.canBroadcast()) return;
 		var targets = tour.splintID(target);
-		if (targets[1] === 'on' || targets[1] === 'off' || config.groups[targets[1]]) {
+		if (targets[1] === 'on' || targets[1] === 'off' || Config.groups[targets[1]]) {
 			target = targets.join(' ');
 		}
 		if (target === 'replace on') {
-			config.tourunlimitreplace = true;
+			Config.tourunlimitreplace = true;
 		} else if (target === 'replace off') {
-			config.tourunlimitreplace = false;
+			Config.tourunlimitreplace = false;
 		} else if (target === 'alts on') {
-			config.tourallowalts = true;
+			Config.tourallowalts = true;
 		} else if (target === 'alts off') {
-			config.tourallowalts = false;
+			Config.tourallowalts = false;
 		} else if (target === 'dq on') {
-			config.tourdqguard = false;
+			Config.tourdqguard = false;
 		} else if (target === 'dq off') {
-			config.tourdqguard = true;
-		} else if (target.substr(0, 8) === 'pollauth' && config.groups[target.substr(9, 1)]) {
-			config.tourpollauth = target.substr(9, 1);
-		} else if (target.substr(0, 7) === 'lowauth' && config.groups[target.substr(8, 1)]) {
-			config.tourlowauth = target.substr(8, 1);
-		} else if (target.substr(0, 7) === 'midauth' && config.groups[target.substr(8, 1)]) {
-			config.tourmidauth = target.substr(8, 1);
-		} else if (target.substr(0, 8) === 'highauth' && config.groups[target.substr(9, 1)]) {
-			config.tourhighauth = target.substr(9, 1);
+			Config.tourdqguard = true;
+		} else if (target.substr(0, 8) === 'pollauth' && Config.groups[target.substr(9, 1)]) {
+			Config.tourpollauth = target.substr(9, 1);
+		} else if (target.substr(0, 7) === 'lowauth' && Config.groups[target.substr(8, 1)]) {
+			Config.tourlowauth = target.substr(8, 1);
+		} else if (target.substr(0, 7) === 'midauth' && Config.groups[target.substr(8, 1)]) {
+			Config.tourmidauth = target.substr(8, 1);
+		} else if (target.substr(0, 8) === 'highauth' && Config.groups[target.substr(9, 1)]) {
+			Config.tourhighauth = target.substr(9, 1);
 		} else if ((target.substr(0, 6) === 'margin') && !isNaN(parseInt(target.substr(7))) && parseInt(target.substr(7)) >= 0) {
-			config.tourtimemargin = parseInt(target.substr(7));
+			Config.tourtimemargin = parseInt(target.substr(7));
 		} else if ((target.substr(0, 6) === 'period') && !isNaN(parseInt(target.substr(7))) && parseInt(target.substr(7)) > 0) {
-			config.tourtimeperiod = parseInt(target.substr(7));
+			Config.tourtimeperiod = parseInt(target.substr(7));
 		} else if (target === 'view' || target === 'show' || target === 'display') {
 			var msg = '';
 			msg += '<big><b>Security:</b></big><br>';
 			msg += '<b><i>Is it possible to...</i></b><br>';
-			msg += '... register with multiple accounts? ' + new Boolean(config.tourallowalts) + '.<br>';
-			msg += '... replace users after the first round has finished? ' + new Boolean(config.tourunlimitreplace) + '.<br>';
-			msg += '... disqualify users even when other players are battling? ' + (!config.tourdqguard) + '.<br>';
+			msg += '... register with multiple accounts? ' + new Boolean(Config.tourallowalts) + '.<br>';
+			msg += '... replace users after the first round has finished? ' + new Boolean(Config.tourunlimitreplace) + '.<br>';
+			msg += '... disqualify users even when other players are battling? ' + (!Config.tourdqguard) + '.<br>';
 			msg += '<br><b><i>What\'s the rank needed to use commands requiring...</i></b><br>';
 			
 			// Poll commands are obvious
@@ -1100,14 +1100,14 @@ var cmds = {
 			// Commands requiring authority are: disqualify, replace, toursize, tourtime, tourstart, endtour
 			// The only command requiring high authority is: invalidate
 			
-			msg += '... polls? ' + (!config.tourpollauth ? '+' : (config.tourpollauth === ' ' ? 'None' : config.tourpollauth)) + '.<br>';
-			msg += '... low authority? ' + (!config.tourlowauth ? '+' : (config.tourlowauth === ' ' ? 'None' : config.tourlowauth)) + '.<br>';
-			msg += '... mid authority? ' + (!config.tourmidauth ? '+' : (config.tourmidauth === ' ' ? 'None, disrecommended' : config.tourmidauth)) + '.<br>';
-			msg += '... high authority? ' + (!config.tourhighauth ? '@' : (config.tourhighauth === ' ' ? 'None, why is it like this?' : config.tourhighauth)) + '.<br>';
+			msg += '... polls? ' + (!Config.tourpollauth ? '+' : (Config.tourpollauth === ' ' ? 'None' : Config.tourpollauth)) + '.<br>';
+			msg += '... low authority? ' + (!Config.tourlowauth ? '+' : (Config.tourlowauth === ' ' ? 'None' : Config.tourlowauth)) + '.<br>';
+			msg += '... mid authority? ' + (!Config.tourmidauth ? '+' : (Config.tourmidauth === ' ' ? 'None, disrecommended' : Config.tourmidauth)) + '.<br>';
+			msg += '... high authority? ' + (!Config.tourhighauth ? '@' : (Config.tourhighauth === ' ' ? 'None, why is it like this?' : Config.tourhighauth)) + '.<br>';
 			msg += '<br><big><b>Timed register tournaments:</b></big><br>';
 			msg += '<b><i>Announcements of joins are done...</i></b><br>';
-			msg += '... per player until ' + (!isNaN(config.tourtimemargin) ? config.tourtimemargin : 3) + ' players have joined.<br>';
-			msg += '... in groups of ' + (config.tourtimeperiod ? config.tourtimeperiod : 4) + ' players.';
+			msg += '... per player until ' + (!isNaN(Config.tourtimemargin) ? Config.tourtimemargin : 3) + ' players have joined.<br>';
+			msg += '... in groups of ' + (Config.tourtimeperiod ? Config.tourtimeperiod : 4) + ' players.';
 			return this.sendReplyBox(msg);
 		} else {
 			return this.sendReply('Valid arguments: view, replace on/off, alts on/off, invalidate on/off, dq on/off, lowauth/midauth/highauth SYMBOL, margin NUMBER, period NUMBER');
@@ -1122,14 +1122,14 @@ var cmds = {
 		if (room.auth[user.userid] !== '#' && user.group !== '~' && !tour.maxauth(user)) return this.sendReply('You do not have enough authority to use this command.');
 		if (!this.canBroadcast()) return;
 		var targets = tour.splintID(target);
-		if (config.groups[targets[1]]) {
+		if (Config.groups[targets[1]]) {
 			target = targets.join(' ');
 		}
-		if (target.substr(0, 8) === 'pollauth' && config.groups[target.substr(9, 1)]) {
+		if (target.substr(0, 8) === 'pollauth' && Config.groups[target.substr(9, 1)]) {
 			room.tourpollauth = target.substr(9, 1);
-		} else if (target.substr(0, 7) === 'lowauth' && config.groups[target.substr(8, 1)]) {
+		} else if (target.substr(0, 7) === 'lowauth' && Config.groups[target.substr(8, 1)]) {
 			room.tourlowauth = target.substr(8, 1);
-		} else if (target.substr(0, 7) === 'midauth' && config.groups[target.substr(8, 1)]) {
+		} else if (target.substr(0, 7) === 'midauth' && Config.groups[target.substr(8, 1)]) {
 			room.tourmidauth = target.substr(8, 1);
 		} else if (target.substr(0, 8) === 'highauth' && config.groups[target.substr(9, 1)]) {
 			room.tourhighauth = target.substr(9, 1);
@@ -1443,7 +1443,7 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 		}
 	}
 
-	if (config.reportbattles && !newRoom.tournament) {
+	if (Config.reportbattles && !newRoom.tournament) {
 		var msg = '<a href="/' + 'battle-' + formaturlid + '-' + this.lastBattle + '" class="ilink"><b>' + ' A battle of the format ' + Tools.getFormat(format).name + ' between ' + p1.getIdentity() + ' and ' + p2.getIdentity() + ' has started.</b></a>';
 		Rooms.lobby.addRaw(msg);
 	}
@@ -1546,7 +1546,7 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 		var p2 = rated.p2;
 		if (Users.getExact(rated.p2)) p2 = Users.getExact(rated.p2).name;
 		
-		//update.updates.push('[DEBUG] uri: '+config.loginserver+'action.php?act=ladderupdate&serverid='+config.serverid+'&p1='+encodeURIComponent(p1)+'&p2='+encodeURIComponent(p2)+'&score='+p1score+'&format='+toId(rated.format)+'&servertoken=[token]');
+		//update.updates.push('[DEBUG] uri: '+Config.loginserver+'action.php?act=ladderupdate&serverid='+Config.serverid+'&p1='+encodeURIComponent(p1)+'&p2='+encodeURIComponent(p2)+'&score='+p1score+'&format='+toId(rated.format)+'&servertoken=[token]');
 
 		if (!rated.p1 || !rated.p2) {
 			this.push('|raw|ERROR: Ladder not updated: a player does not exist');
