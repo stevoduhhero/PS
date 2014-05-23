@@ -665,7 +665,7 @@ var cmds = {
 
 		var joinHelp = '</font> <font color="red">/j</font> <font color="green"> to join</font>';
 		
-		Rooms.rooms[rid].addRaw('<hr /><h2><font color="green">' + sanitize(user.name) + ' has started a ' + Tools.data.Formats[targets[0]].name + ' Tournament.' + joinHelp + '</h2><b><font color="blueviolet">PLAYERS:</font></b> ' + targets[1] + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[targets[0]].name + '<hr />');
+		Rooms.rooms[rid].addRaw('<hr /><h2><font color="green">' + Tools.escapeHTML(user.name) + ' has started a ' + Tools.data.Formats[targets[0]].name + ' Tournament.' + joinHelp + '</h2><b><font color="blueviolet">PLAYERS:</font></b> ' + targets[1] + '<br /><font color="blue"><b>TIER:</b></font> ' + Tools.data.Formats[targets[0]].name + '<hr />');
 		if (tour.timers[rid]) Rooms.rooms[rid].addRaw('<i>The tournament will begin in ' + tour.timers[rid].time + ' minute' + (tour.timers[rid].time == 1 ? '' : 's') + '.<i>');
 	},
 
@@ -1589,13 +1589,13 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 						var acre = Math.round(data.p1rating.acre);
 						var reasons = ''+(acre-oldacre)+' for '+(p1score>0.99?'winning':(p1score<0.01?'losing':'tying'));
 						if (reasons.substr(0,1) !== '-') reasons = '+'+reasons;
-						self.addRaw(sanitize(p1)+'\'s rating: '+oldacre+' &rarr; <strong>'+acre+'</strong><br />('+reasons+')');
+						self.addRaw(Tools.escapeHTML(p1)+'\'s rating: '+oldacre+' &rarr; <strong>'+acre+'</strong><br />('+reasons+')');
 
 						oldacre = Math.round(data.p2rating.oldacre);
 						acre = Math.round(data.p2rating.acre);
 						reasons = ''+(acre-oldacre)+' for '+(p1score>0.99?'losing':(p1score<0.01?'winning':'tying'));
 						if (reasons.substr(0,1) !== '-') reasons = '+'+reasons;
-						self.addRaw(sanitize(p2)+'\'s rating: '+oldacre+' &rarr; <strong>'+acre+'</strong><br />('+reasons+')');
+						self.addRaw(Tools.escapeHTML(p2)+'\'s rating: '+oldacre+' &rarr; <strong>'+acre+'</strong><br />('+reasons+')');
 
 						Users.get(p1).cacheMMR(rated.format, data.p1rating);
 						Users.get(p2).cacheMMR(rated.format, data.p2rating);
