@@ -1210,7 +1210,12 @@ var cmds = {
 		tour[room.id].question = question;
 		tour[room.id].answerList = answers;
 		var separacion = "&nbsp;&nbsp;";
-		room.addRaw('<div class="infobox"><h2>' + tour[room.id].question + separacion + '<font color="green"><b>To vote, write </b></font><font color="red"><b>/vote OPTION</b></font></h2><hr />' + separacion + separacion + " &bull; " + tour[room.id].answerList.join(' &bull; ') + '</div>');
+		var list = separacion + " &bull; ";
+		for (var u in tour[room.id].answerList) {
+			if (!tour[room.id].answerList[u] || tour[room.id].answerList[u].length < 1) continue;
+			list += '<button name="send" value="/vote '+tour[room.id].answerList[u]+'">'+tour[room.id].answerList[u]+'</button>&nbsp;';
+		}
+		room.addRaw('<div class="infobox"><h2>' + tour[room.id].question + separacion + '<font color="green"><b>To vote, write </b></font><font color="red"><b>/vote OPTION</b></font></h2><hr />' + list + '</div>');
 	},
 
 	tierpoll: function (target, room, user) {
@@ -1358,7 +1363,12 @@ var cmds = {
 		if (tour[room.id].hidelist) {
 			list += separacion + separacion + "<i>The option list has been hidden</i>.";
 		} else {
-			list += separacion + separacion + " &bull; " + tour[room.id].answerList.join(' &bull; ');
+			list += separacion + " &bull; ";
+			for (var u in tour[room.id].answerList) {
+				if (!tour[room.id].answerList[u] || tour[room.id].answerList[u].length < 1) continue;
+				list += '<button name="send" value="/vote '+tour[room.id].answerList[u]+'">'+tour[room.id].answerList[u]+'</button>&nbsp;';
+			}
+
 		}
 		this.sendReply('|raw|<div class="infobox"><h2>' + tour[room.id].question + separacion + '<font color="green"><b>To vote, write </b></font><font color="red"><b>/vote OPTION</b></font></h2><hr />' + list + '</div>');
 	},
