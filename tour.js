@@ -1205,6 +1205,7 @@ var cmds = {
 		var answers = tour.splint(target);
 		if (answers.length < 3) return this.sendReply('Correct syntax for this command is /openpoll question, option, option...');
 		var question = answers[0];
+		this.logModCommand('' + user.name + ' started a poll: "' + question + '"')
 		answers.splice(0, 1);
 		var answers = answers.join(',').toLowerCase().split(',');
 		tour[room.id].question = question;
