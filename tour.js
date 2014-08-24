@@ -1630,7 +1630,7 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 
 Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	if (this.resetTimer) {
-		if (user) this.sendUser('|inactive|The inactivity timer is already counting down.');
+		if (user) this.sendUser(user, '|inactive|The inactivity timer is already counting down.');
 		return false;
 	}
 	if (user) {
