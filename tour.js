@@ -1454,7 +1454,7 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 		}
 	}
 
-	if (Config.reportbattles && !newRoom.tournament) {
+	if (!newRoom.tournament && Config.reportbattles && Rooms.lobby) {
 		var msg = '<a href="/' + 'battle-' + formaturlid + '-' + this.lastBattle + '" class="ilink"><b>' + ' A battle of the format ' + Tools.getFormat(format).name + ' between ' + p1.getIdentity() + ' and ' + p2.getIdentity() + ' has started.</b></a>';
 		Rooms.lobby.addRaw(msg);
 	}
@@ -1564,7 +1564,7 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 		} else {
 			var winner = Users.get(winnerid);
 			if (winner && !winner.authenticated) {
-				this.send('|askreg|' + winner.userid, winner);
+				this.sendUser('|askreg|' + winner.userid);
 			}
 			var p1rating, p2rating;
 			// update rankings
@@ -1630,7 +1630,7 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 
 Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	if (this.resetTimer) {
-		if (user) this.send('|inactive|The inactivity timer is already counting down.', user);
+		if (user) this.sendUser('|inactive|The inactivity timer is already counting down.');
 		return false;
 	}
 	if (user) {
@@ -1664,12 +1664,12 @@ Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	if (inactiveSide != 1) {
 		// side 0 is inactive
 		var ticksLeft0 = Math.min(this.sideTicksLeft[0] + 1, maxTicksLeft);
-		this.send('|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.', this.battle.getPlayer(0));
+		this.send(this.battle.getPlayer(0), '|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.');
 	}
 	if (inactiveSide != 0) {
 		// side 1 is inactive
 		var ticksLeft1 = Math.min(this.sideTicksLeft[1] + 1, maxTicksLeft);
-		this.send('|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.', this.battle.getPlayer(1));
+		this.send(this.battle.getPlayer(1), '|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.');
 	}
 
 	this.resetTimer = setTimeout(this.kickInactive.bind(this), 10 * 1000);
