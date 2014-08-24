@@ -1583,7 +1583,6 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 				}
 				if (!data) {
 					self.addRaw('Ladder (probably) updated, but score could not be retrieved (' + error + ').');
-					self.update();
 					// log the battle anyway
 					if (!Tools.getFormat(self.format).noLog) {
 						self.logBattle(p1score);
@@ -1664,12 +1663,12 @@ Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	if (inactiveSide != 1) {
 		// side 0 is inactive
 		var ticksLeft0 = Math.min(this.sideTicksLeft[0] + 1, maxTicksLeft);
-		this.sendUser(this.battle.getPlayer(0), '|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.');
+		this.sendPlayer(0, '|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.');
 	}
 	if (inactiveSide != 0) {
 		// side 1 is inactive
 		var ticksLeft1 = Math.min(this.sideTicksLeft[1] + 1, maxTicksLeft);
-		this.sendUser(this.battle.getPlayer(1), '|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.');
+		this.sendPlayer(1, '|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.');
 	}
 
 	this.resetTimer = setTimeout(this.kickInactive.bind(this), 10 * 1000);
