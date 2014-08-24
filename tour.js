@@ -1564,7 +1564,7 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 		} else {
 			var winner = Users.get(winnerid);
 			if (winner && !winner.authenticated) {
-				this.sendUser('|askreg|' + winner.userid);
+				this.sendUser(winner, '|askreg|' + winner.userid);
 			}
 			var p1rating, p2rating;
 			// update rankings
