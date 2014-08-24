@@ -1664,12 +1664,12 @@ Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	if (inactiveSide != 1) {
 		// side 0 is inactive
 		var ticksLeft0 = Math.min(this.sideTicksLeft[0] + 1, maxTicksLeft);
-		this.send(this.battle.getPlayer(0), '|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.');
+		this.sendUser(this.battle.getPlayer(0), '|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.');
 	}
 	if (inactiveSide != 0) {
 		// side 1 is inactive
 		var ticksLeft1 = Math.min(this.sideTicksLeft[1] + 1, maxTicksLeft);
-		this.send(this.battle.getPlayer(1), '|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.');
+		this.sendUser(this.battle.getPlayer(1), '|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.');
 	}
 
 	this.resetTimer = setTimeout(this.kickInactive.bind(this), 10 * 1000);
