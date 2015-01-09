@@ -1393,7 +1393,7 @@ for (var i in cmds) CommandParser.commands[i] = cmds[i];
  * Events
  *********************************************************/
 
-Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
+Rooms.global.startBattle = function (p1, p2, format, p1team, p2team, options) {
 	var newRoom;
 	p1 = Users.get(p1);
 	p2 = Users.get(p2);
@@ -1411,7 +1411,7 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 		return;
 	}
 
-	if (this.lockdown) {
+	if (this.lockdown === true) {
 		this.cancelSearch(p1, true);
 		this.cancelSearch(p2, true);
 		p1.popup("The server is shutting down. Battles cannot be started at this time.");
@@ -1426,7 +1426,8 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 		i++;
 	}
 	this.lastBattle = i;
-	newRoom = this.addRoom('battle-' + formaturlid + '-' + i, format, p1, p2, this.id, rated);
+	Rooms.global.writeNumRooms();
+	newRoom = this.addRoom('battle-' + formaturlid + '-' + i, format, p1, p2, options);
 	p1.joinRoom(newRoom);
 	p2.joinRoom(newRoom);
 	newRoom.joinBattle(p1, p1team);
@@ -1434,7 +1435,7 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 	this.cancelSearch(p1, true);
 	this.cancelSearch(p2, true);
 
-	if (!rated) {
+	if (!options.rated) {
 		var name1 = p1.name;
 		var name2 = p2.name;
 		for (var i in tour) {
@@ -1458,11 +1459,19 @@ Rooms.global.startBattle = function (p1, p2, format, rated, p1team, p2team) {
 		var msg = '<a href="/' + 'battle-' + formaturlid + '-' + this.lastBattle + '" class="ilink"><b>' + ' A battle of the format ' + Tools.getFormat(format).name + ' between ' + p1.getIdentity() + ' and ' + p2.getIdentity() + ' has started.</b></a>';
 		Rooms.lobby.addRaw(msg);
 	}
+
+	if (Config.logladderip && options.rated) {
+		if (!this.ladderIpLog) {
+			this.ladderIpLog = fs.createWriteStream('logs/ladderip/ladderip.txt', {flags: 'a'});
+		}
+		this.ladderIpLog.write(p1.userid + ': ' + p1.latestIp + '\n');
+		this.ladderIpLog.write(p2.userid + ': ' + p2.latestIp + '\n');
+	}
 	return newRoom;
 };
 
 Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
-	var slot = undefined;
+	var slot;
 	if (this.rated) {
 		if (this.rated.p1 === user.userid) {
 			slot = 0;
@@ -1470,6 +1479,17 @@ Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
 			slot = 1;
 		} else {
 			user.popup("This is a rated battle; your username must be "+this.rated.p1+" or "+this.rated.p2+" to join.");
+			return false;
+		}
+	}
+
+	if (this.tour) {
+		if (this.tour.p1 === user.userid) {
+			slot = 0;
+		} else if (this.tour.p2 === user.userid) {
+			slot = 1;
+		} else {
+			user.popup("This is a tournament battle; your username must be " + this.tour.p1 + " or " + this.tour.p2 + " to join.");
 			return false;
 		}
 	}
@@ -1484,6 +1504,11 @@ Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
 		}
 	}
 
+	if (this.battle.active) {
+		user.popup("This battle already has two players.");
+		return false;
+	}
+
 	this.auth[user.userid] = '\u2605';
 	this.battle.join(user, slot, team);
 	Rooms.global.battleCount += (this.battle.active ? 1 : 0) - (this.active ? 1 : 0);
@@ -1494,17 +1519,19 @@ Rooms.BattleRoom.prototype.joinBattle = function (user, team) {
 	}
 	this.update();
 
-	if (this.parentid) {
-		Rooms.get(this.parentid).updateRooms();
-	}
+	this.kickInactiveUpdate();
 };
  
 Rooms.BattleRoom.prototype.win = function (winner) {
+	// Declare variables here in case we need them for non-rated battles logging.
+	var p1score = 0.5;
+	var winnerid = toId(winner);
+
+	// Check if the battle was rated to update the ladder, return its response, and log the battle.
 
 	//tour
 	var rid = this.tournament;
 	if (rid) {
-		var winnerid = toId(winner);
 		var loserid = this.p1.userid;
 		var istie = false;
 		if (this.p1.userid == winnerid) {
@@ -1538,13 +1565,11 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 			}
 		}
 	}
-	//fin tour
+	// end tour
 
 	if (this.rated) {
-		var winnerid = toId(winner);
 		var rated = this.rated;
 		this.rated = false;
-		var p1score = 0.5;
 
 		if (winnerid === rated.p1) {
 			p1score = 1;
@@ -1556,19 +1581,19 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 		if (Users.getExact(rated.p1)) p1 = Users.getExact(rated.p1).name;
 		var p2 = rated.p2;
 		if (Users.getExact(rated.p2)) p2 = Users.getExact(rated.p2).name;
-		
+
 		//update.updates.push('[DEBUG] uri: '+Config.loginserver+'action.php?act=ladderupdate&serverid='+Config.serverid+'&p1='+encodeURIComponent(p1)+'&p2='+encodeURIComponent(p2)+'&score='+p1score+'&format='+toId(rated.format)+'&servertoken=[token]');
 
 		if (!rated.p1 || !rated.p2) {
 			this.push('|raw|ERROR: Ladder not updated: a player does not exist');
 		} else {
-			var winner = Users.get(winnerid);
+			winner = Users.get(winnerid);
 			if (winner && !winner.authenticated) {
 				this.sendUser(winner, '|askreg|' + winner.userid);
 			}
 			var p1rating, p2rating;
 			// update rankings
-			
+
 			this.push('|raw|Ladder updating...');
 			var self = this;
 			LoginServer.request('ladderupdate', {
@@ -1587,6 +1612,9 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 					if (!Tools.getFormat(self.format).noLog) {
 						self.logBattle(p1score);
 					}
+					return;
+				} else if (data.errorip) {
+					self.addRaw("This server's request IP " + data.errorip + " is not a registered server.");
 					return;
 				} else {
 					try {
@@ -1621,6 +1649,21 @@ Rooms.BattleRoom.prototype.win = function (winner) {
 				}
 			});
 		}
+	} else if (Config.logchallenges) {
+		// Log challenges if the challenge logging config is enabled.
+		if (winnerid === this.p1.userid) {
+			p1score = 1;
+		} else if (winnerid === this.p2.userid) {
+			p1score = 0;
+		}
+		this.update();
+		this.logBattle(p1score);
+	}
+	if (this.tour) {
+		var winnerid = toId(winner);
+		winner = Users.get(winner);
+		var tour = this.tour.tour;
+		tour.onBattleWin(this, winner);
 	}
 	Rooms.global.battleCount += 0 - (this.active ? 1 : 0);
 	this.active = false;
@@ -1660,12 +1703,12 @@ Rooms.BattleRoom.prototype.requestKickInactive = function (user, force) {
 	}
 	this.sideTicksLeft[0]++;
 	this.sideTicksLeft[1]++;
-	if (inactiveSide != 1) {
+	if (inactiveSide !== 1) {
 		// side 0 is inactive
 		var ticksLeft0 = Math.min(this.sideTicksLeft[0] + 1, maxTicksLeft);
 		this.sendPlayer(0, '|inactive|You have ' + (ticksLeft0 * 10) + ' seconds to make your decision.');
 	}
-	if (inactiveSide != 0) {
+	if (inactiveSide !== 0) {
 		// side 1 is inactive
 		var ticksLeft1 = Math.min(this.sideTicksLeft[1] + 1, maxTicksLeft);
 		this.sendPlayer(1, '|inactive|You have ' + (ticksLeft1 * 10) + ' seconds to make your decision.');
